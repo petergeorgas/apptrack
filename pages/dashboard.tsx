@@ -119,11 +119,24 @@ const Dashboard: NextPage = () => {
 							rowSpan={7}
 						>
 							<Box>
-								<ApplicationCard company="Amazon" status="APPLY" role="SDE I" />
-								<ApplicationCard company="Amazon" status="APPLY" role="SDE I" />
-								<ApplicationCard company="Amazon" status="APPLY" role="SDE I" />
-								<ApplicationCard company="Amazon" status="APPLY" role="SDE I" />
-								<ApplicationCard company="Amazon" status="APPLY" role="SDE I" />
+								<ApplicationCard
+									company="Amazon"
+									location="Seattle, WA"
+									status="APPLY"
+									role="SDE I"
+								/>
+								<ApplicationCard
+									company="Google"
+									location="Mountain View, CA"
+									status="APPLY"
+									role="SWE I"
+								/>
+								<ApplicationCard
+									company="Meta"
+									location="Menlo Park, CA"
+									status="APPLY"
+									role="SWE I"
+								/>
 							</Box>
 						</GridItem>
 						<GridItem
@@ -134,7 +147,28 @@ const Dashboard: NextPage = () => {
 							p={4}
 							overflowY="auto"
 							rowSpan={7}
-						/>
+						>
+							<Box>
+								<ApplicationCard
+									company="Leidos"
+									location="Reston, VA"
+									status="PHONE"
+									role="SWE I"
+								/>
+								<ApplicationCard
+									company="Stripe"
+									location="San Francisco, CA"
+									status="FINAL"
+									role="SRE I"
+								/>
+								<ApplicationCard
+									company="Netflix"
+									location="Los Gatos, CA"
+									status="OA"
+									role="Test Engineer"
+								/>
+							</Box>
+						</GridItem>
 						<GridItem
 							w="100%"
 							bg={colorMode === "light" ? "gray.100" : "gray.700"}
@@ -143,7 +177,14 @@ const Dashboard: NextPage = () => {
 							p={4}
 							overflowY="auto"
 							rowSpan={7}
-						/>
+						>
+							<ApplicationCard
+								company="Leidos"
+								location="Reston, VA"
+								status="OFFER"
+								role="SWE I"
+							/>
+						</GridItem>
 						<GridItem
 							w="100%"
 							bg={colorMode === "light" ? "gray.100" : "gray.700"}
@@ -152,7 +193,14 @@ const Dashboard: NextPage = () => {
 							p={4}
 							overflowY="auto"
 							rowSpan={7}
-						/>
+						>
+							<ApplicationCard
+								company="Hudson River Trading"
+								location="New York, NY"
+								status="REJECT"
+								role="Quant SWE I"
+							/>
+						</GridItem>
 					</Grid>
 				</Box>
 			</Flex>
