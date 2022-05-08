@@ -71,62 +71,53 @@ const Home: NextPage = () => {
 		resetState();
 	};
 
+	if (user) {
+		router.push("/dashboard");
+	}
+
 	return (
 		<Flex w="full" h="100vh" justify="center" align="center">
-			{user ? (
-				<div>
-					<Text>SIGNED IN!!!</Text>
+			<Box
+				boxShadow="lg"
+				w="md"
+				h="sm"
+				borderWidth="1px"
+				borderRadius="lg"
+				p={4}
+			>
+				<VStack align="flex-start" w="full" h="full" spacing={4}>
+					<Heading>Log In</Heading>
+					<Spacer />
+					<Input value={email} placeholder="Email" onChange={onEmailChange} />
+					<FormControl isInvalid={invalid}>
+						<Input
+							isInvalid={invalid}
+							value={pass}
+							placeholder="Password"
+							type="password"
+							onChange={onPassChange}
+						/>
+						<FormErrorMessage>{invalidText}</FormErrorMessage>
+					</FormControl>
+					<Link color="purple.400" onClick={onForgetPass}>
+						Forgot password?
+					</Link>
+					<Spacer />
+					<Divider />
+					<Button colorScheme="purple" w="full" onClick={onSubmit}>
+						Sign In
+					</Button>
 					<Button
+						colorScheme="gray"
+						w="full"
 						onClick={() => {
-							logout();
+							router.push("/register");
 						}}
 					>
-						Sign Out!
+						Create Account
 					</Button>
-				</div>
-			) : (
-				<Box
-					boxShadow="lg"
-					w="md"
-					h="sm"
-					borderWidth="1px"
-					borderRadius="lg"
-					p={4}
-				>
-					<VStack align="flex-start" w="full" h="full" spacing={4}>
-						<Heading>Log In</Heading>
-						<Spacer />
-						<Input value={email} placeholder="Email" onChange={onEmailChange} />
-						<FormControl isInvalid={invalid}>
-							<Input
-								isInvalid={invalid}
-								value={pass}
-								placeholder="Password"
-								type="password"
-								onChange={onPassChange}
-							/>
-							<FormErrorMessage>{invalidText}</FormErrorMessage>
-						</FormControl>
-						<Link color="purple.400" onClick={onForgetPass}>
-							Forgot password?
-						</Link>
-						<Spacer />
-						<Divider />
-						<Button colorScheme="purple" w="full" onClick={onSubmit}>
-							Sign In
-						</Button>
-						<Button
-							colorScheme="gray"
-							w="full"
-							onClick={() => {
-								router.push("/register");
-							}}
-						>
-							Create Account
-						</Button>
-					</VStack>
-				</Box>
-			)}
+				</VStack>
+			</Box>
 		</Flex>
 	);
 };
