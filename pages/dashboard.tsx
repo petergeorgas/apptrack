@@ -119,11 +119,11 @@ const Dashboard: NextPage = () => {
 							rowSpan={7}
 						>
 							<Box>
-								<ApplicationCard company="Amazon" role="SDE I" />
-								<ApplicationCard company="Amazon" role="SDE I" />
-								<ApplicationCard company="Amazon" role="SDE I" />
-								<ApplicationCard company="Amazon" role="SDE I" />
-								<ApplicationCard company="Amazon" role="SDE I" />
+								<ApplicationCard company="Amazon" status="APPLY" role="SDE I" />
+								<ApplicationCard company="Amazon" status="APPLY" role="SDE I" />
+								<ApplicationCard company="Amazon" status="APPLY" role="SDE I" />
+								<ApplicationCard company="Amazon" status="APPLY" role="SDE I" />
+								<ApplicationCard company="Amazon" status="APPLY" role="SDE I" />
 							</Box>
 						</GridItem>
 						<GridItem

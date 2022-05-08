@@ -1,8 +1,18 @@
 import { Box, Heading, Text, useColorMode } from "@chakra-ui/react";
 import React from "react";
 
-function ApplicationCard(props: any) {
-	const { company, role } = props;
+type ApplicationCardProps = {
+	company: string;
+	role: string;
+	status: string;
+	location?: string;
+	dateApplied?: string;
+	dateUpdated?: string;
+	notes?: string;
+};
+
+function ApplicationCard(props: ApplicationCardProps) {
+	const { company, role, location, dateApplied, dateUpdated, notes } = props;
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
