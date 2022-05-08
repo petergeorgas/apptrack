@@ -48,10 +48,9 @@ const Register: NextPage = () => {
 
 	const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		addUser({ variables: { email: email } });
-
+		var uid;
 		try {
-			await registerWithEmailAndPass(email, pass);
+			uid = await registerWithEmailAndPass(email, pass);
 		} catch (e: any) {
 			setInvalidEmail(false);
 			setInvalidPass(false);
@@ -74,6 +73,14 @@ const Register: NextPage = () => {
 				});
 			}
 
+			return;
+		}
+
+		if (uid) {
+			//TODO: Update addUser mutation to take the UID and use that as the document ID
+			// in Firestore.
+			addUser({ variables: { email: email } });
+		} else {
 			return;
 		}
 

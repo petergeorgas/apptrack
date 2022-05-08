@@ -28,8 +28,14 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-const registerWithEmailAndPass = async (email: string, pass: string) => {
+const registerWithEmailAndPass = async (
+	email: string,
+	pass: string
+): Promise<string> => {
 	const res = await createUserWithEmailAndPassword(auth, email, pass);
+	const uid = res.user.uid;
+
+	return uid;
 };
 
 const sendPassReset = async (email: string) => {
