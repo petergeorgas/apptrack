@@ -11,6 +11,7 @@ import {
 	InputGroup,
 	InputLeftElement,
 	Spacer,
+	Spinner,
 	Text,
 	useColorMode,
 	useDisclosure,
@@ -55,12 +56,12 @@ const Dashboard: NextPage = () => {
 		if (!user) {
 			router.push("/");
 		}
+
+		if (localStorage.getItem("apptrack-ui-color-mode") === "dark") {
+			setTimeout(() => toggleColorMode(), 500);
+		}
 	}, [user, router, data]);
 
-	
-	if (loading) {
-		console.log("LOADING...");
-	}
 	if (error) {
 		console.log(error.message);
 	}
@@ -79,7 +80,14 @@ const Dashboard: NextPage = () => {
 						size="lg"
 						aria-label={colorMode === "light" ? "light mode" : "dark mode"}
 						icon={colorMode === "light" ? <SunIcon /> : <MoonIcon />}
-						onClick={toggleColorMode}
+						onClick={() => {
+							if (colorMode === "dark")
+								localStorage.setItem("apptrack-ui-color-mode", "light");
+							else {
+								localStorage.setItem("apptrack-ui-color-mode", "dark");
+							}
+							toggleColorMode();
+						}}
 					/>
 					<Button w="108px" size="lg" colorScheme="purple">
 						Add
@@ -96,169 +104,175 @@ const Dashboard: NextPage = () => {
 					borderRadius="lg"
 					p={4}
 				>
-					<Grid
-						templateRows="repeat(8, 1fr)"
-						templateColumns="repeat(4, 1fr)"
-						gap={5}
-						h="full"
-					>
-						<GridItem
-							w="100%"
-							borderWidth="2px"
-							borderRadius="lg"
-							p={4}
-							rowSpan={1}
+					{loading ? (
+						<Flex w="full" h="full" align="center" justify="center">
+							<Spinner size="xl" />
+						</Flex>
+					) : (
+						<Grid
+							templateRows="repeat(8, 1fr)"
+							templateColumns="repeat(4, 1fr)"
+							gap={5}
+							h="full"
 						>
-							<Heading size="md">Apply</Heading>
-						</GridItem>
-						<GridItem
-							w="100%"
-							borderWidth="2px"
-							borderRadius="lg"
-							p={4}
-							rowSpan={1}
-						>
-							<Heading size="md">In Progress</Heading>
-						</GridItem>
-						<GridItem
-							w="100%"
-							borderWidth="2px"
-							borderRadius="lg"
-							p={4}
-							rowSpan={1}
-						>
-							<Heading size="md">Offer</Heading>
-						</GridItem>
-						<GridItem
-							w="100%"
-							borderWidth="2px"
-							borderRadius="lg"
-							p={4}
-							rowSpan={1}
-						>
-							<Heading size="md">Reject</Heading>
-						</GridItem>
-						<GridItem
-							w="100%"
-							bg={colorMode === "light" ? "gray.100" : "gray.700"}
-							borderWidth="2px"
-							borderRadius="lg"
-							p={4}
-							overflowY="auto"
-							rowSpan={7}
-						>
-							{data && (
-								<>
-									{data.applications.map((app: Application) => {
-										if (app.status === "APPLY") {
-											return (
-												<ApplicationCard
-													id={app.id}
-													company={app.company}
-													location={app.location}
-													role={app.role}
-													status={app.status}
-													notes={app.notes}
-													dateApplied={app.dateApplied}
-												/>
-											);
-										}
-									})}
-								</>
-							)}
-						</GridItem>
-						<GridItem
-							w="100%"
-							bg={colorMode === "light" ? "gray.100" : "gray.700"}
-							borderWidth="2px"
-							borderRadius="lg"
-							p={4}
-							overflowY="auto"
-							rowSpan={7}
-						>
-							{data && (
-								<>
-									{data.applications.map((app: Application) => {
-										if (
-											app.status === "OA" ||
-											app.status === "PHONE" ||
-											app.status === "FINAL"
-										) {
-											return (
-												<ApplicationCard
-													id={app.id}
-													company={app.company}
-													location={app.location}
-													role={app.role}
-													status={app.status}
-													notes={app.notes}
-													dateApplied={app.dateApplied}
-												/>
-											);
-										}
-									})}
-								</>
-							)}
-						</GridItem>
-						<GridItem
-							w="100%"
-							bg={colorMode === "light" ? "gray.100" : "gray.700"}
-							borderWidth="2px"
-							borderRadius="lg"
-							p={4}
-							overflowY="auto"
-							rowSpan={7}
-						>
-							{data && (
-								<>
-									{data.applications.map((app: Application) => {
-										if (app.status === "OFFER") {
-											return (
-												<ApplicationCard
-													id={app.id}
-													company={app.company}
-													location={app.location}
-													role={app.role}
-													status={app.status}
-													notes={app.notes}
-													dateApplied={app.dateApplied}
-												/>
-											);
-										}
-									})}
-								</>
-							)}
-						</GridItem>
-						<GridItem
-							w="100%"
-							bg={colorMode === "light" ? "gray.100" : "gray.700"}
-							borderWidth="2px"
-							borderRadius="lg"
-							p={4}
-							overflowY="auto"
-							rowSpan={7}
-						>
-							{data && (
-								<>
-									{data.applications.map((app: Application) => {
-										if (app.status === "REJECT") {
-											return (
-												<ApplicationCard
-													id={app.id}
-													company={app.company}
-													location={app.location}
-													role={app.role}
-													status={app.status}
-													notes={app.notes}
-													dateApplied={app.dateApplied}
-												/>
-											);
-										}
-									})}
-								</>
-							)}
-						</GridItem>
-					</Grid>
+							<GridItem
+								w="100%"
+								borderWidth="2px"
+								borderRadius="lg"
+								p={4}
+								rowSpan={1}
+							>
+								<Heading size="md">Apply</Heading>
+							</GridItem>
+							<GridItem
+								w="100%"
+								borderWidth="2px"
+								borderRadius="lg"
+								p={4}
+								rowSpan={1}
+							>
+								<Heading size="md">In Progress</Heading>
+							</GridItem>
+							<GridItem
+								w="100%"
+								borderWidth="2px"
+								borderRadius="lg"
+								p={4}
+								rowSpan={1}
+							>
+								<Heading size="md">Offer</Heading>
+							</GridItem>
+							<GridItem
+								w="100%"
+								borderWidth="2px"
+								borderRadius="lg"
+								p={4}
+								rowSpan={1}
+							>
+								<Heading size="md">Reject</Heading>
+							</GridItem>
+							<GridItem
+								w="100%"
+								bg={colorMode === "light" ? "gray.100" : "gray.700"}
+								borderWidth="2px"
+								borderRadius="lg"
+								p={4}
+								overflowY="auto"
+								rowSpan={7}
+							>
+								{data && (
+									<>
+										{data.applications.map((app: Application) => {
+											if (app.status === "APPLY") {
+												return (
+													<ApplicationCard
+														id={app.id}
+														company={app.company}
+														location={app.location}
+														role={app.role}
+														status={app.status}
+														notes={app.notes}
+														dateApplied={app.dateApplied}
+													/>
+												);
+											}
+										})}
+									</>
+								)}
+							</GridItem>
+							<GridItem
+								w="100%"
+								bg={colorMode === "light" ? "gray.100" : "gray.700"}
+								borderWidth="2px"
+								borderRadius="lg"
+								p={4}
+								overflowY="auto"
+								rowSpan={7}
+							>
+								{data && (
+									<>
+										{data.applications.map((app: Application) => {
+											if (
+												app.status === "OA" ||
+												app.status === "PHONE" ||
+												app.status === "FINAL"
+											) {
+												return (
+													<ApplicationCard
+														id={app.id}
+														company={app.company}
+														location={app.location}
+														role={app.role}
+														status={app.status}
+														notes={app.notes}
+														dateApplied={app.dateApplied}
+													/>
+												);
+											}
+										})}
+									</>
+								)}
+							</GridItem>
+							<GridItem
+								w="100%"
+								bg={colorMode === "light" ? "gray.100" : "gray.700"}
+								borderWidth="2px"
+								borderRadius="lg"
+								p={4}
+								overflowY="auto"
+								rowSpan={7}
+							>
+								{data && (
+									<>
+										{data.applications.map((app: Application) => {
+											if (app.status === "OFFER") {
+												return (
+													<ApplicationCard
+														id={app.id}
+														company={app.company}
+														location={app.location}
+														role={app.role}
+														status={app.status}
+														notes={app.notes}
+														dateApplied={app.dateApplied}
+													/>
+												);
+											}
+										})}
+									</>
+								)}
+							</GridItem>
+							<GridItem
+								w="100%"
+								bg={colorMode === "light" ? "gray.100" : "gray.700"}
+								borderWidth="2px"
+								borderRadius="lg"
+								p={4}
+								overflowY="auto"
+								rowSpan={7}
+							>
+								{data && (
+									<>
+										{data.applications.map((app: Application) => {
+											if (app.status === "REJECT") {
+												return (
+													<ApplicationCard
+														id={app.id}
+														company={app.company}
+														location={app.location}
+														role={app.role}
+														status={app.status}
+														notes={app.notes}
+														dateApplied={app.dateApplied}
+													/>
+												);
+											}
+										})}
+									</>
+								)}
+							</GridItem>
+						</Grid>
+					)}
 				</Box>
 			</Flex>
 		</Flex>
