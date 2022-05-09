@@ -79,7 +79,7 @@ const Register: NextPage = () => {
 		if (uid) {
 			//TODO: Update addUser mutation to take the UID and use that as the document ID
 			// in Firestore.
-			addUser({ variables: { email: email } });
+			addUser({ variables: { email: email, userId: uid } });
 		} else {
 			return;
 		}
