@@ -12,6 +12,7 @@ import {
 import React from "react";
 
 type ApplicationCardProps = {
+	id: string;
 	company: string;
 	role: string;
 	status: string;
@@ -22,8 +23,16 @@ type ApplicationCardProps = {
 };
 
 function ApplicationCard(props: ApplicationCardProps) {
-	const { company, role, status, location, dateApplied, dateUpdated, notes } =
-		props;
+	const {
+		id,
+		company,
+		role,
+		status,
+		location,
+		dateApplied,
+		dateUpdated,
+		notes,
+	} = props;
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (

@@ -19,10 +19,23 @@ import {
 import { MoonIcon, Search2Icon, SearchIcon, SunIcon } from "@chakra-ui/icons";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
-import { logout } from "../firebase/firebase";
+import React, { useEffect, useRef, useState } from "react";
+import { auth, logout } from "../firebase/firebase";
 import ApplicationCard from "../components/ApplicationCard/ApplicationCard";
 import SignOutAlert from "../components/SignOutAlert/SignOutAlert";
+import { GET_APPLICATIONS } from "../gql/queries/query";
+import { useQuery } from "@apollo/client";
+import { useAuthState } from "react-firebase-hooks/auth";
+
+type Application = {
+	id: string;
+	company: string;
+	role: string;
+	location?: string;
+	status: string;
+	dateApplied: string;
+	notes?: string;
+};
 
 const Dashboard: NextPage = () => {
 	const router = useRouter();
@@ -31,10 +44,26 @@ const Dashboard: NextPage = () => {
 
 	const { colorMode, toggleColorMode } = useColorMode();
 
-	// Applied
-	// Rejected
-	// In progress
-	// Offer
+	const [user, authLoading, authErr] = useAuthState(auth);
+
+	// TODO: ONLY QUERY IF USER IS NOT NULL !!
+	const { loading, error, data } = useQuery(GET_APPLICATIONS, {
+		variables: { userId: "VD7s8woYbpOyRsAEoT9oJzvtoiQ2" },
+	});
+
+	useEffect(() => {
+		if (!user) {
+			router.push("/");
+		}
+	}, [user, router, data]);
+
+	
+	if (loading) {
+		console.log("LOADING...");
+	}
+	if (error) {
+		console.log(error.message);
+	}
 
 	return (
 		<Flex w="100%" h="100vh" align="center" justify="center" direction="column">
@@ -118,26 +147,25 @@ const Dashboard: NextPage = () => {
 							overflowY="auto"
 							rowSpan={7}
 						>
-							<Box>
-								<ApplicationCard
-									company="Amazon"
-									location="Seattle, WA"
-									status="APPLY"
-									role="SDE I"
-								/>
-								<ApplicationCard
-									company="Google"
-									location="Mountain View, CA"
-									status="APPLY"
-									role="SWE I"
-								/>
-								<ApplicationCard
-									company="Meta"
-									location="Menlo Park, CA"
-									status="APPLY"
-									role="SWE I"
-								/>
-							</Box>
+							{data && (
+								<>
+									{data.applications.map((app: Application) => {
+										if (app.status === "APPLY") {
+											return (
+												<ApplicationCard
+													id={app.id}
+													company={app.company}
+													location={app.location}
+													role={app.role}
+													status={app.status}
+													notes={app.notes}
+													dateApplied={app.dateApplied}
+												/>
+											);
+										}
+									})}
+								</>
+							)}
 						</GridItem>
 						<GridItem
 							w="100%"
@@ -148,26 +176,29 @@ const Dashboard: NextPage = () => {
 							overflowY="auto"
 							rowSpan={7}
 						>
-							<Box>
-								<ApplicationCard
-									company="Leidos"
-									location="Reston, VA"
-									status="PHONE"
-									role="SWE I"
-								/>
-								<ApplicationCard
-									company="Stripe"
-									location="San Francisco, CA"
-									status="FINAL"
-									role="SRE I"
-								/>
-								<ApplicationCard
-									company="Netflix"
-									location="Los Gatos, CA"
-									status="OA"
-									role="Test Engineer"
-								/>
-							</Box>
+							{data && (
+								<>
+									{data.applications.map((app: Application) => {
+										if (
+											app.status === "OA" ||
+											app.status === "PHONE" ||
+											app.status === "FINAL"
+										) {
+											return (
+												<ApplicationCard
+													id={app.id}
+													company={app.company}
+													location={app.location}
+													role={app.role}
+													status={app.status}
+													notes={app.notes}
+													dateApplied={app.dateApplied}
+												/>
+											);
+										}
+									})}
+								</>
+							)}
 						</GridItem>
 						<GridItem
 							w="100%"
@@ -178,12 +209,25 @@ const Dashboard: NextPage = () => {
 							overflowY="auto"
 							rowSpan={7}
 						>
-							<ApplicationCard
-								company="Leidos"
-								location="Reston, VA"
-								status="OFFER"
-								role="SWE I"
-							/>
+							{data && (
+								<>
+									{data.applications.map((app: Application) => {
+										if (app.status === "OFFER") {
+											return (
+												<ApplicationCard
+													id={app.id}
+													company={app.company}
+													location={app.location}
+													role={app.role}
+													status={app.status}
+													notes={app.notes}
+													dateApplied={app.dateApplied}
+												/>
+											);
+										}
+									})}
+								</>
+							)}
 						</GridItem>
 						<GridItem
 							w="100%"
@@ -194,12 +238,25 @@ const Dashboard: NextPage = () => {
 							overflowY="auto"
 							rowSpan={7}
 						>
-							<ApplicationCard
-								company="Hudson River Trading"
-								location="New York, NY"
-								status="REJECT"
-								role="Quant SWE I"
-							/>
+							{data && (
+								<>
+									{data.applications.map((app: Application) => {
+										if (app.status === "REJECT") {
+											return (
+												<ApplicationCard
+													id={app.id}
+													company={app.company}
+													location={app.location}
+													role={app.role}
+													status={app.status}
+													notes={app.notes}
+													dateApplied={app.dateApplied}
+												/>
+											);
+										}
+									})}
+								</>
+							)}
 						</GridItem>
 					</Grid>
 				</Box>
