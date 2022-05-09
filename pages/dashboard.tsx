@@ -53,14 +53,25 @@ const Dashboard: NextPage = () => {
 	});
 
 	useEffect(() => {
-		if (!user) {
+		if (!user && !authLoading) {
 			router.push("/");
 		}
+	}, [user, authLoading, router]);
 
-		if (localStorage.getItem("apptrack-ui-color-mode") === "dark") {
+	useEffect(() => {
+		if (
+			localStorage.getItem("apptrack-ui-color-mode") === "dark" &&
+			colorMode === "light"
+		) {
 			setTimeout(() => toggleColorMode(), 500);
 		}
-	}, [user, router, data]);
+		if (
+			localStorage.getItem("apptrack-ui-color-mode") === "light" &&
+			colorMode === "dark"
+		) {
+			setTimeout(() => toggleColorMode(), 500);
+		}
+	}, []);
 
 	if (error) {
 		console.log(error.message);
