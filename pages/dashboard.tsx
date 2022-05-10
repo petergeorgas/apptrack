@@ -27,6 +27,7 @@ import SignOutAlert from "../components/SignOutAlert/SignOutAlert";
 import { GET_APPLICATIONS } from "../gql/queries/query";
 import { useQuery } from "@apollo/client";
 import { useAuthState } from "react-firebase-hooks/auth";
+import AddAppModal from "../components/AddAppModal/AddAppModal";
 
 type Application = {
 	id: string;
@@ -41,7 +42,16 @@ type Application = {
 const Dashboard: NextPage = () => {
 	const router = useRouter();
 
-	const { isOpen, onOpen, onClose } = useDisclosure();
+	const {
+		isOpen: isAlertOpen,
+		onOpen: onAlertOpen,
+		onClose: onAlertClose,
+	} = useDisclosure();
+	const {
+		isOpen: isAddModalOpen,
+		onOpen: onAddModalOpen,
+		onClose: onAddModalClose,
+	} = useDisclosure();
 
 	const { colorMode, toggleColorMode } = useColorMode();
 
@@ -49,7 +59,7 @@ const Dashboard: NextPage = () => {
 
 	// TODO: ONLY QUERY IF USER IS NOT NULL !!
 	const { loading, error, data } = useQuery(GET_APPLICATIONS, {
-		variables: { userId: "VD7s8woYbpOyRsAEoT9oJzvtoiQ2" },
+		variables: { userId: user?.uid },
 	});
 
 	useEffect(() => {
@@ -76,10 +86,21 @@ const Dashboard: NextPage = () => {
 	if (error) {
 		console.log(error.message);
 	}
+	console.log(data);
 
 	return (
 		<Flex w="100%" h="100vh" align="center" justify="center" direction="column">
-			<SignOutAlert isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+			<SignOutAlert
+				isOpen={isAlertOpen}
+				onOpen={onAlertOpen}
+				onClose={onAlertClose}
+			/>
+			<AddAppModal
+				isOpen={isAddModalOpen}
+				onOpen={onAddModalOpen}
+				onClose={onAddModalClose}
+				uid={user?.uid}
+			/>
 			<Flex direction="column">
 				<HStack mb={4}>
 					<InputGroup>
@@ -100,10 +121,15 @@ const Dashboard: NextPage = () => {
 							toggleColorMode();
 						}}
 					/>
-					<Button w="108px" size="lg" colorScheme="purple">
+					<Button
+						w="108px"
+						size="lg"
+						colorScheme="purple"
+						onClick={onAddModalOpen}
+					>
 						Add
 					</Button>
-					<Button w="108px" size="lg" onClick={onOpen}>
+					<Button w="108px" size="lg" onClick={onAlertOpen}>
 						Sign Out
 					</Button>
 				</HStack>

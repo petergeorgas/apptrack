@@ -62,7 +62,10 @@ const Home: NextPage = () => {
 			await logInWithEmailAndPass(email, pass);
 		} catch (e: any) {
 			setInvalid(true);
-			if (e.code === "auth/wrong-password") {
+			if (
+				e.code === "auth/wrong-password" ||
+				e.code === "auth/internal-error"
+			) {
 				setInvalidText("Incorrect password.");
 			}
 			return;
