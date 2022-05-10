@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client";
 import { DeleteIcon } from "@chakra-ui/icons";
 import {
 	Badge,
@@ -9,7 +10,9 @@ import {
 	useColorMode,
 	VStack,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
+import { DEL_APP } from "../../gql/mutations/mutation";
+import { GET_APPLICATIONS } from "../../gql/queries/query";
 
 type ApplicationCardProps = {
 	id: string;
@@ -20,6 +23,7 @@ type ApplicationCardProps = {
 	dateApplied?: string;
 	dateUpdated?: string;
 	notes?: string;
+	uid?: string;
 };
 
 function ApplicationCard(props: ApplicationCardProps) {
@@ -32,8 +36,30 @@ function ApplicationCard(props: ApplicationCardProps) {
 		dateApplied,
 		dateUpdated,
 		notes,
+		uid,
 	} = props;
+
 	const { colorMode, toggleColorMode } = useColorMode();
+
+	const [deleteApplication, { data, loading, error }] = useMutation(DEL_APP, {
+		update(cache, { data: { addApplication } }) {
+			cache.modify({
+				fields: {
+					applications(existingApps = []) {
+						const newAppRef = cache.writeQuery({
+							query: GET_APPLICATIONS,
+							variables: {
+								userId: uid,
+							},
+							data: addApplication,
+						});
+
+						return [...existingApps, newAppRef];
+					},
+				},
+			});
+		},
+	});
 
 	return (
 		<Box
@@ -83,7 +109,11 @@ function ApplicationCard(props: ApplicationCardProps) {
 						as="button"
 						color={colorMode === "light" ? "gray.200" : "gray.700"}
 						_hover={{ color: colorMode === "light" ? "gray.400" : "gray.500" }}
-						onClick={() => {}}
+						onClick={() => {
+							deleteApplication({
+								variables: { userId: uid, appId: id },
+							});
+						}}
 					/>
 				</HStack>
 			</VStack>

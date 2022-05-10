@@ -38,3 +38,18 @@ export const ADD_APP = gql`
 		}
 	}
 `;
+
+export const DEL_APP = gql`
+	mutation DeleteApplication($userId: String!, $appId: String!) {
+		deleteApplication(userId: $userId, appId: $appId) {
+			id
+			company
+			role
+			location
+			status
+			dateApplied
+			dateUpdated
+			notes
+		}
+	}
+`;

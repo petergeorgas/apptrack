@@ -34,6 +34,15 @@ function AddAppModal(props: any) {
 	const initialRef = useRef(null);
 	const { isOpen, onClose, uid } = props;
 
+	const resetState = () => {
+		setCompany("");
+		setRole("");
+		setLocation("");
+		setStatus("");
+		setDateApplied("");
+		setNotes("");
+	};
+
 	const [addApplication, { data, loading, error }] = useMutation(ADD_APP, {
 		update(cache, { data: { addApplication } }) {
 			cache.modify({
@@ -69,6 +78,7 @@ function AddAppModal(props: any) {
 			},
 		});
 
+		resetState();
 		// TODO: MAKE SURE ERROR DOESN'T HAPPEN!!
 		onClose();
 	};

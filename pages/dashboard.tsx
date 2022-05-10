@@ -210,6 +210,7 @@ const Dashboard: NextPage = () => {
 														status={app.status}
 														notes={app.notes}
 														dateApplied={app.dateApplied}
+														uid={user?.uid}
 													/>
 												);
 											}
@@ -243,6 +244,7 @@ const Dashboard: NextPage = () => {
 														status={app.status}
 														notes={app.notes}
 														dateApplied={app.dateApplied}
+														uid={user?.uid}
 													/>
 												);
 											}
@@ -272,6 +274,7 @@ const Dashboard: NextPage = () => {
 														status={app.status}
 														notes={app.notes}
 														dateApplied={app.dateApplied}
+														uid={user?.uid}
 													/>
 												);
 											}
@@ -301,6 +304,7 @@ const Dashboard: NextPage = () => {
 														status={app.status}
 														notes={app.notes}
 														dateApplied={app.dateApplied}
+														uid={user?.uid}
 													/>
 												);
 											}
