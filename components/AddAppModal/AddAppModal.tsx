@@ -2,6 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import {
 	Button,
 	FormControl,
+	FormErrorMessage,
 	FormLabel,
 	Input,
 	Modal,
@@ -17,11 +18,6 @@ import {
 import React, { useRef, useState } from "react";
 import { ADD_APP } from "../../gql/mutations/mutation";
 import { GET_APPLICATIONS } from "../../gql/queries/query";
-import ApplicationCard from "../ApplicationCard/ApplicationCard";
-
-type AllTasksResult = {
-	allTasks: any;
-};
 
 function AddAppModal(props: any) {
 	const [company, setCompany] = useState("");
@@ -30,6 +26,11 @@ function AddAppModal(props: any) {
 	const [status, setStatus] = useState("");
 	const [dateApplied, setDateApplied] = useState("");
 	const [notes, setNotes] = useState("");
+
+	const [companyInvald, setCompanyInvalid] = useState(false);
+	const [roleInvalid, setRoleInvalid] = useState(false);
+	const [statusInvalid, setStatusInvalid] = useState(false);
+	const [dateInvalid, setDateInvalid] = useState(false);
 
 	const initialRef = useRef(null);
 	const { isOpen, onClose, uid } = props;
@@ -41,6 +42,10 @@ function AddAppModal(props: any) {
 		setStatus("");
 		setDateApplied("");
 		setNotes("");
+		setCompanyInvalid(false);
+		setRoleInvalid(false);
+		setStatusInvalid(false);
+		setDateInvalid(false);
 	};
 
 	const [addApplication, { data, loading, error }] = useMutation(ADD_APP, {
@@ -65,8 +70,28 @@ function AddAppModal(props: any) {
 
 	const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		// TODO: Verify form input to make sure everything plays nice
 		// TODO: Add notes to AddUser
+
+		if (company === "") {
+			setCompanyInvalid(true);
+			return;
+		}
+
+		if (role === "") {
+			setRoleInvalid(true);
+			return;
+		}
+
+		if (dateApplied === "") {
+			setDateInvalid(true);
+			return;
+		}
+
+		if (status === "") {
+			setStatusInvalid(true);
+			return;
+		}
+
 		addApplication({
 			variables: {
 				userId: uid,
@@ -90,9 +115,10 @@ function AddAppModal(props: any) {
 				<ModalHeader>Add Application</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody pb={6}>
-					<FormControl>
+					<FormControl isInvalid={companyInvald}>
 						<FormLabel>Company</FormLabel>
 						<Input
+							required
 							ref={initialRef}
 							placeholder="Company"
 							value={company}
@@ -100,17 +126,20 @@ function AddAppModal(props: any) {
 								setCompany(e.currentTarget.value);
 							}}
 						/>
+						<FormErrorMessage>Company is required.</FormErrorMessage>
 					</FormControl>
 
-					<FormControl mt={4}>
+					<FormControl mt={4} isInvalid={roleInvalid}>
 						<FormLabel>Role</FormLabel>
 						<Input
+							required
 							placeholder="Role"
 							value={role}
 							onChange={(e: React.FormEvent<HTMLInputElement>) => {
 								setRole(e.currentTarget.value);
 							}}
 						/>
+						<FormErrorMessage>Role is required.</FormErrorMessage>
 					</FormControl>
 
 					<FormControl mt={4}>
@@ -123,9 +152,10 @@ function AddAppModal(props: any) {
 							}}
 						/>
 					</FormControl>
-					<FormControl mt={4}>
+					<FormControl mt={4} isInvalid={dateInvalid}>
 						<FormLabel>Date Applied</FormLabel>
 						<Input
+							required
 							value={dateApplied}
 							cursor="pointer"
 							type="date"
@@ -134,10 +164,12 @@ function AddAppModal(props: any) {
 								setDateApplied(e.currentTarget.value);
 							}}
 						/>
+						<FormErrorMessage>Date applied is required.</FormErrorMessage>
 					</FormControl>
-					<FormControl mt={4}>
+					<FormControl mt={4} isInvalid={statusInvalid}>
 						<FormLabel>Status</FormLabel>
 						<Select
+							required
 							cursor="pointer"
 							placeholder="Select Status"
 							value={status}
@@ -152,6 +184,7 @@ function AddAppModal(props: any) {
 							<option value="OFFER">OFFER</option>
 							<option value="REJECT">REJECT</option>
 						</Select>
+						<FormErrorMessage>Status is required.</FormErrorMessage>
 					</FormControl>
 					<FormControl mt={4}>
 						<FormLabel>Notes</FormLabel>
@@ -170,7 +203,13 @@ function AddAppModal(props: any) {
 					<Button w="100px" colorScheme="purple" mr={3} onClick={onSubmit}>
 						Add
 					</Button>
-					<Button w="100px" onClick={onClose}>
+					<Button
+						w="100px"
+						onClick={() => {
+							resetState();
+							onClose();
+						}}
+					>
 						Cancel
 					</Button>
 				</ModalFooter>
