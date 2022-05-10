@@ -86,7 +86,6 @@ const Dashboard: NextPage = () => {
 	if (error) {
 		console.log(error.message);
 	}
-	console.log(data);
 
 	return (
 		<Flex w="100%" h="100vh" align="center" justify="center" direction="column">
@@ -101,7 +100,7 @@ const Dashboard: NextPage = () => {
 				onClose={onAddModalClose}
 				uid={user?.uid}
 			/>
-			<Flex direction="column">
+			<Flex w={["full", "full", "full", "1000px", "1500px"]} direction="column">
 				<HStack mb={4}>
 					<InputGroup>
 						<InputLeftElement children={<Search2Icon color="gray" />} />
@@ -133,14 +132,7 @@ const Dashboard: NextPage = () => {
 						Sign Out
 					</Button>
 				</HStack>
-				<Box
-					boxShadow="lg"
-					w="1500px"
-					h="2xl"
-					borderWidth="1px"
-					borderRadius="lg"
-					p={4}
-				>
+				<Box boxShadow="lg" h="2xl" borderWidth="1px" borderRadius="lg" p={4}>
 					{loading ? (
 						<Flex w="full" h="full" align="center" justify="center">
 							<Spinner size="xl" />
