@@ -20,7 +20,7 @@ type ApplicationCardProps = {
 	role: string;
 	status: string;
 	location?: string;
-	dateApplied?: string;
+	dateApplied?: Date;
 	dateUpdated?: string;
 	notes?: string;
 	uid?: string;
@@ -82,7 +82,13 @@ function ApplicationCard(props: ApplicationCardProps) {
 					</VStack>
 					<Spacer />
 					<VStack spacing={0} align="top">
-						<Text>May 5, 2022</Text>
+						<Text>
+							{dateApplied?.toLocaleDateString("en-us", {
+								year: "numeric",
+								month: "short",
+								day: "numeric",
+							})}
+						</Text>
 					</VStack>
 				</HStack>
 				<VStack align="flex-start">

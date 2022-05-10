@@ -62,6 +62,8 @@ const Dashboard: NextPage = () => {
 		variables: { userId: user?.uid },
 	});
 
+	const [search, setSearch] = useState("");
+
 	useEffect(() => {
 		if (!user && !authLoading) {
 			router.push("/");
@@ -88,6 +90,10 @@ const Dashboard: NextPage = () => {
 	}
 	console.log(data);
 
+	const onSearchChange = (e: React.FormEvent<HTMLInputElement>) => {
+		setSearch(e.currentTarget.value);
+	};
+
 	return (
 		<Flex w="100%" h="100vh" align="center" justify="center" direction="column">
 			<SignOutAlert
@@ -105,7 +111,13 @@ const Dashboard: NextPage = () => {
 				<HStack mb={4}>
 					<InputGroup>
 						<InputLeftElement children={<Search2Icon color="gray" />} />
-						<Input size="lg" w="500px" placeholder="Search"></Input>
+						<Input
+							size="lg"
+							w="500px"
+							placeholder="Search"
+							value={search}
+							onChange={onSearchChange}
+						></Input>
 					</InputGroup>
 					<Spacer />
 					<IconButton
@@ -200,7 +212,10 @@ const Dashboard: NextPage = () => {
 								{data && (
 									<>
 										{data.applications.map((app: Application) => {
-											if (app.status === "APPLY") {
+											if (
+												app.status === "APPLY" &&
+												app.company.lastIndexOf(search) != -1
+											) {
 												return (
 													<ApplicationCard
 														id={app.id}
@@ -209,7 +224,7 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={app.dateApplied}
+														dateApplied={new Date(app.dateApplied)}
 														uid={user?.uid}
 													/>
 												);
@@ -243,7 +258,7 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={app.dateApplied}
+														dateApplied={new Date(app.dateApplied)}
 														uid={user?.uid}
 													/>
 												);
@@ -273,7 +288,7 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={app.dateApplied}
+														dateApplied={new Date(app.dateApplied)}
 														uid={user?.uid}
 													/>
 												);
@@ -303,7 +318,7 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={app.dateApplied}
+														dateApplied={new Date(app.dateApplied)}
 														uid={user?.uid}
 													/>
 												);
