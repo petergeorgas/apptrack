@@ -209,7 +209,7 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={app.dateApplied}
+														dateApplied={new Date(app.dateApplied)}
 														uid={user?.uid}
 													/>
 												);
@@ -243,7 +243,7 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={app.dateApplied}
+														dateApplied={new Date(app.dateApplied)}
 														uid={user?.uid}
 													/>
 												);
@@ -273,7 +273,7 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={app.dateApplied}
+														dateApplied={new Date(app.dateApplied)}
 														uid={user?.uid}
 													/>
 												);
@@ -303,7 +303,7 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={app.dateApplied}
+														dateApplied={new Date(app.dateApplied)}
 														uid={user?.uid}
 													/>
 												);
