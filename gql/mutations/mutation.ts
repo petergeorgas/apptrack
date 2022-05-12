@@ -16,7 +16,8 @@ export const ADD_APP = gql`
 		$location: String!
 		$role: String!
 		$status: Status!
-		$dateApplied: String!
+		$dateApplied: String!,
+		$notes: String
 	) {
 		createApplication(
 			input: {
@@ -25,6 +26,7 @@ export const ADD_APP = gql`
 				role: $role
 				status: $status
 				dateApplied: $dateApplied
+				notes: $notes
 			}
 			userId: $userId
 		) {
