@@ -100,6 +100,7 @@ function AddAppModal(props: any) {
 				location: location,
 				status: status,
 				dateApplied: dateApplied,
+				notes: notes,
 			},
 		});
 
