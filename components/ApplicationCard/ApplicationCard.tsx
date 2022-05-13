@@ -24,6 +24,7 @@ type ApplicationCardProps = {
 	dateUpdated?: string;
 	notes?: string;
 	uid?: string;
+	onclick: Function;
 };
 
 function ApplicationCard(props: ApplicationCardProps) {
@@ -37,6 +38,7 @@ function ApplicationCard(props: ApplicationCardProps) {
 		dateUpdated,
 		notes,
 		uid,
+		onclick,
 	} = props;
 
 	const { colorMode, toggleColorMode } = useColorMode();
@@ -73,6 +75,17 @@ function ApplicationCard(props: ApplicationCardProps) {
 			borderRadius="lg"
 			p={2}
 			mb={2}
+			onClick={() => {
+				onclick({
+					id: id,
+					company: company,
+					role: role,
+					location: location,
+					status: status,
+					dateApplied: dateApplied,
+					notes: notes,
+				});
+			}}
 		>
 			<VStack align="left" spacing={1}>
 				<HStack>

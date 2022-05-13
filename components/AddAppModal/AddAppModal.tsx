@@ -20,12 +20,24 @@ import { ADD_APP } from "../../gql/mutations/mutation";
 import { GET_APPLICATIONS } from "../../gql/queries/query";
 
 function AddAppModal(props: any) {
-	const [company, setCompany] = useState("");
-	const [role, setRole] = useState("");
-	const [location, setLocation] = useState("");
-	const [status, setStatus] = useState("");
-	const [dateApplied, setDateApplied] = useState("");
-	const [notes, setNotes] = useState("");
+	const { isOpen, onClose, uid, application } = props;
+
+	const appKeyLen = Object.keys(application).length; // Used to keep track of if the application object is empty or not
+
+	const [company, setCompany] = useState<string>(
+		appKeyLen > 0 ? application.company : ""
+	);
+	const [role, setRole] = useState(appKeyLen > 0 ? application.role : "");
+	const [location, setLocation] = useState(
+		appKeyLen > 0 ? application.location : ""
+	);
+	const [status, setStatus] = useState(appKeyLen > 0 ? application.status : "");
+	const [dateApplied, setDateApplied] = useState(
+		appKeyLen > 0 ? application.dateApplied : ""
+	);
+	const [notes, setNotes] = useState(
+		appKeyLen > 0 && application.notes ? application.notes : ""
+	);
 
 	const [companyInvald, setCompanyInvalid] = useState(false);
 	const [roleInvalid, setRoleInvalid] = useState(false);
@@ -33,7 +45,6 @@ function AddAppModal(props: any) {
 	const [dateInvalid, setDateInvalid] = useState(false);
 
 	const initialRef = useRef(null);
-	const { isOpen, onClose, uid } = props;
 
 	const resetState = () => {
 		setCompany("");
@@ -92,17 +103,21 @@ function AddAppModal(props: any) {
 			return;
 		}
 
-		addApplication({
-			variables: {
-				userId: uid,
-				company: company,
-				role: role,
-				location: location,
-				status: status,
-				dateApplied: dateApplied,
-				notes: notes,
-			},
-		});
+		if (!application) {
+			addApplication({
+				variables: {
+					userId: uid,
+					company: company,
+					role: role,
+					location: location,
+					status: status,
+					dateApplied: dateApplied,
+					notes: notes,
+				},
+			});
+		} else {
+			// UpdateApplication...
+		}
 
 		resetState();
 		// TODO: MAKE SURE ERROR DOESN'T HAPPEN!!
@@ -113,7 +128,9 @@ function AddAppModal(props: any) {
 		<Modal isCentered isOpen={isOpen} onClose={onClose}>
 			<ModalOverlay />
 			<ModalContent>
-				<ModalHeader>Add Application</ModalHeader>
+				<ModalHeader>
+					{appKeyLen !== 0 ? "Update" : "Add"} Application
+				</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody pb={6}>
 					<FormControl isInvalid={companyInvald}>
@@ -202,7 +219,7 @@ function AddAppModal(props: any) {
 
 				<ModalFooter>
 					<Button w="100px" colorScheme="purple" mr={3} onClick={onSubmit}>
-						Add
+						{appKeyLen !== 0 ? "Update" : "Add"}
 					</Button>
 					<Button
 						w="100px"

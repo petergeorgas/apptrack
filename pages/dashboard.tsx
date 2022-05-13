@@ -55,12 +55,29 @@ const Dashboard: NextPage = () => {
 
 	const { colorMode, toggleColorMode } = useColorMode();
 
+	const [currentApp, setCurrentApp] = useState({});
+
 	const [user, authLoading, authErr] = useAuthState(auth);
 
 	// TODO: ONLY QUERY IF USER IS NOT NULL !!
 	const { loading, error, data } = useQuery(GET_APPLICATIONS, {
 		variables: { userId: user?.uid },
 	});
+
+	const onApplicationClick = (app: Application) => {
+		console.log(app);
+		setCurrentApp({
+			id: app.id,
+			company: app.company,
+			role: app.role,
+			location: app.location,
+			status: app.status,
+			dateApplied: app.dateApplied,
+			notes: app.notes,
+		});
+
+		onAddModalOpen();
+	};
 
 	useEffect(() => {
 		if (!user && !authLoading) {
@@ -100,6 +117,7 @@ const Dashboard: NextPage = () => {
 				onOpen={onAddModalOpen}
 				onClose={onAddModalClose}
 				uid={user?.uid}
+				application={currentApp}
 			/>
 			<Flex direction="column">
 				<HStack mb={4}>
@@ -211,6 +229,7 @@ const Dashboard: NextPage = () => {
 														notes={app.notes}
 														dateApplied={new Date(app.dateApplied)}
 														uid={user?.uid}
+														onclick={onApplicationClick}
 													/>
 												);
 											}
@@ -245,6 +264,7 @@ const Dashboard: NextPage = () => {
 														notes={app.notes}
 														dateApplied={new Date(app.dateApplied)}
 														uid={user?.uid}
+														onclick={onApplicationClick}
 													/>
 												);
 											}
@@ -275,6 +295,7 @@ const Dashboard: NextPage = () => {
 														notes={app.notes}
 														dateApplied={new Date(app.dateApplied)}
 														uid={user?.uid}
+														onclick={onApplicationClick}
 													/>
 												);
 											}
@@ -305,6 +326,7 @@ const Dashboard: NextPage = () => {
 														notes={app.notes}
 														dateApplied={new Date(app.dateApplied)}
 														uid={user?.uid}
+														onclick={onApplicationClick}
 													/>
 												);
 											}
