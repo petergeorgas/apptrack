@@ -270,17 +270,18 @@ function AddAppModal(props: AddAppModalProps) {
 				</ModalBody>
 
 				<ModalFooter>
-					<Button w="100px" colorScheme="purple" mr={3} onClick={onSubmit}>
-						{Object.keys(application).length > 0 ? "Update" : "Add"}
-					</Button>
 					<Button
 						w="100px"
+						mr={3}
 						onClick={() => {
 							resetState();
 							onClose();
 						}}
 					>
 						Cancel
+					</Button>
+					<Button w="100px" colorScheme="purple" onClick={onSubmit}>
+						{Object.keys(application).length > 0 ? "Update" : "Add"}
 					</Button>
 				</ModalFooter>
 			</ModalContent>

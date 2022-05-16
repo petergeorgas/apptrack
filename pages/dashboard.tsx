@@ -215,6 +215,7 @@ const Dashboard: NextPage = () => {
 											if (app.status === "APPLY") {
 												return (
 													<ApplicationCard
+														key={app.id}
 														id={app.id}
 														company={app.company}
 														location={app.location}
@@ -250,6 +251,7 @@ const Dashboard: NextPage = () => {
 											) {
 												return (
 													<ApplicationCard
+														key={app.id}
 														id={app.id}
 														company={app.company}
 														location={app.location}
@@ -281,6 +283,7 @@ const Dashboard: NextPage = () => {
 											if (app.status === "OFFER") {
 												return (
 													<ApplicationCard
+														key={app.id}
 														id={app.id}
 														company={app.company}
 														location={app.location}
@@ -312,6 +315,7 @@ const Dashboard: NextPage = () => {
 											if (app.status === "REJECT") {
 												return (
 													<ApplicationCard
+														key={app.id}
 														id={app.id}
 														company={app.company}
 														location={app.location}
