@@ -6,7 +6,7 @@ import {
 } from "@apollo/client";
 
 const httpLink = createHttpLink({
-	uri: "http://localhost:8080/query",
+	uri: "https://app-track-gql-v3eqkiipcq-ue.a.run.app/query",
 });
 
 const client = new ApolloClient({
