@@ -28,16 +28,7 @@ import { GET_APPLICATIONS } from "../gql/queries/query";
 import { useQuery } from "@apollo/client";
 import { useAuthState } from "react-firebase-hooks/auth";
 import AddAppModal from "../components/AddAppModal/AddAppModal";
-
-type Application = {
-	id: string;
-	company: string;
-	role: string;
-	location?: string;
-	status: string;
-	dateApplied: string;
-	notes?: string;
-};
+import { Application } from "../types/types";
 
 const Dashboard: NextPage = () => {
 	const router = useRouter();
@@ -65,7 +56,6 @@ const Dashboard: NextPage = () => {
 	});
 
 	const onApplicationClick = (app: Application) => {
-		console.log(app);
 		setCurrentApp({
 			id: app.id,
 			company: app.company,
@@ -77,6 +67,10 @@ const Dashboard: NextPage = () => {
 		});
 
 		onAddModalOpen();
+	};
+
+	const resetApp = () => {
+		setCurrentApp({});
 	};
 
 	useEffect(() => {
@@ -103,7 +97,6 @@ const Dashboard: NextPage = () => {
 	if (error) {
 		console.log(error.message);
 	}
-	console.log(data);
 
 	return (
 		<Flex w="100%" h="100vh" align="center" justify="center" direction="column">
@@ -118,6 +111,7 @@ const Dashboard: NextPage = () => {
 				onClose={onAddModalClose}
 				uid={user?.uid}
 				application={currentApp}
+				resetApp={resetApp}
 			/>
 			<Flex direction="column">
 				<HStack mb={4}>
@@ -227,7 +221,7 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={new Date(app.dateApplied)}
+														dateApplied={app.dateApplied}
 														uid={user?.uid}
 														onclick={onApplicationClick}
 													/>
@@ -262,7 +256,7 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={new Date(app.dateApplied)}
+														dateApplied={app.dateApplied}
 														uid={user?.uid}
 														onclick={onApplicationClick}
 													/>
@@ -293,7 +287,7 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={new Date(app.dateApplied)}
+														dateApplied={app.dateApplied}
 														uid={user?.uid}
 														onclick={onApplicationClick}
 													/>
@@ -324,7 +318,7 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={new Date(app.dateApplied)}
+														dateApplied={app.dateApplied}
 														uid={user?.uid}
 														onclick={onApplicationClick}
 													/>

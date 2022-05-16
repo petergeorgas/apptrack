@@ -15,29 +15,29 @@ import {
 	Select,
 	Textarea,
 } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
-import { ADD_APP } from "../../gql/mutations/mutation";
+import React, { useEffect, useRef, useState } from "react";
+import { ADD_APP, UPDATE_APP } from "../../gql/mutations/mutation";
 import { GET_APPLICATIONS } from "../../gql/queries/query";
+import { Application } from "../../types/types";
 
-function AddAppModal(props: any) {
-	const { isOpen, onClose, uid, application } = props;
+type AddAppModalProps = {
+	isOpen: boolean;
+	onOpen: () => void;
+	onClose: () => void;
+	uid?: string;
+	application: any; // I know this is bad. Fix later
+	resetApp: () => void;
+};
 
-	const appKeyLen = Object.keys(application).length; // Used to keep track of if the application object is empty or not
+function AddAppModal(props: AddAppModalProps) {
+	const { isOpen, onClose, uid, application, resetApp } = props;
 
-	const [company, setCompany] = useState<string>(
-		appKeyLen > 0 ? application.company : ""
-	);
-	const [role, setRole] = useState(appKeyLen > 0 ? application.role : "");
-	const [location, setLocation] = useState(
-		appKeyLen > 0 ? application.location : ""
-	);
-	const [status, setStatus] = useState(appKeyLen > 0 ? application.status : "");
-	const [dateApplied, setDateApplied] = useState(
-		appKeyLen > 0 ? application.dateApplied : ""
-	);
-	const [notes, setNotes] = useState(
-		appKeyLen > 0 && application.notes ? application.notes : ""
-	);
+	const [company, setCompany] = useState<string>("");
+	const [role, setRole] = useState("");
+	const [location, setLocation] = useState("");
+	const [status, setStatus] = useState("");
+	const [dateApplied, setDateApplied] = useState("");
+	const [notes, setNotes] = useState("");
 
 	const [companyInvald, setCompanyInvalid] = useState(false);
 	const [roleInvalid, setRoleInvalid] = useState(false);
@@ -59,6 +59,15 @@ function AddAppModal(props: any) {
 		setDateInvalid(false);
 	};
 
+	useEffect(() => {
+		if (application.company) setCompany(application.company);
+		if (application.role) setRole(application.role);
+		if (application.location) setLocation(application.location);
+		if (application.status) setStatus(application.status);
+		if (application.dateApplied) setDateApplied(application.dateApplied);
+		if (application.notes) setNotes(application.notes);
+	}, [application]);
+
 	const [addApplication, { data, loading, error }] = useMutation(ADD_APP, {
 		update(cache, { data: { addApplication } }) {
 			cache.modify({
@@ -78,6 +87,27 @@ function AddAppModal(props: any) {
 			});
 		},
 	});
+
+	const [updateApp, { data: upData, loading: upLoading, error: upErr }] =
+		useMutation(UPDATE_APP, {
+			update(cache, { data: { addApplication } }) {
+				cache.modify({
+					fields: {
+						applications(existingApps = []) {
+							const newAppRef = cache.writeQuery({
+								query: GET_APPLICATIONS,
+								variables: {
+									userId: uid,
+								},
+								data: addApplication,
+							});
+
+							return [...existingApps, newAppRef];
+						},
+					},
+				});
+			},
+		});
 
 	const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
@@ -103,7 +133,22 @@ function AddAppModal(props: any) {
 			return;
 		}
 
-		if (!application) {
+		if (Object.keys(application).length > 0) {
+			updateApp({
+				variables: {
+					userId: uid,
+					appId: application.id,
+					company: company,
+					role: role,
+					location: location,
+					status: status,
+					dateApplied: dateApplied,
+					notes: notes,
+				},
+			});
+		} else {
+			// New Application
+
 			addApplication({
 				variables: {
 					userId: uid,
@@ -115,21 +160,28 @@ function AddAppModal(props: any) {
 					notes: notes,
 				},
 			});
-		} else {
-			// UpdateApplication...
 		}
 
 		resetState();
+		resetApp();
 		// TODO: MAKE SURE ERROR DOESN'T HAPPEN!!
 		onClose();
 	};
 
 	return (
-		<Modal isCentered isOpen={isOpen} onClose={onClose}>
+		<Modal
+			isCentered
+			isOpen={isOpen}
+			onClose={() => {
+				resetState();
+				resetApp();
+				onClose();
+			}}
+		>
 			<ModalOverlay />
 			<ModalContent>
 				<ModalHeader>
-					{appKeyLen !== 0 ? "Update" : "Add"} Application
+					{Object.keys(application).length > 0 ? "Update" : "Add"} Application
 				</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody pb={6}>
@@ -219,7 +271,7 @@ function AddAppModal(props: any) {
 
 				<ModalFooter>
 					<Button w="100px" colorScheme="purple" mr={3} onClick={onSubmit}>
-						{appKeyLen !== 0 ? "Update" : "Add"}
+						{Object.keys(application).length > 0 ? "Update" : "Add"}
 					</Button>
 					<Button
 						w="100px"

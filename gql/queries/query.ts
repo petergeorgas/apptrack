@@ -9,6 +9,7 @@ export const GET_APPLICATIONS = gql`
 			location
 			status
 			dateApplied
+			notes
 		}
 	}
 `;
