@@ -20,10 +20,11 @@ type ApplicationCardProps = {
 	role: string;
 	status: string;
 	location?: string;
-	dateApplied?: Date;
+	dateApplied: string;
 	dateUpdated?: string;
 	notes?: string;
 	uid?: string;
+	onclick: Function;
 };
 
 function ApplicationCard(props: ApplicationCardProps) {
@@ -37,6 +38,7 @@ function ApplicationCard(props: ApplicationCardProps) {
 		dateUpdated,
 		notes,
 		uid,
+		onclick,
 	} = props;
 
 	const { colorMode, toggleColorMode } = useColorMode();
@@ -73,6 +75,17 @@ function ApplicationCard(props: ApplicationCardProps) {
 			borderRadius="lg"
 			p={2}
 			mb={2}
+			onClick={() => {
+				onclick({
+					id: id,
+					company: company,
+					role: role,
+					location: location,
+					status: status,
+					dateApplied: dateApplied,
+					notes: notes,
+				});
+			}}
 		>
 			<VStack align="left" spacing={1}>
 				<HStack>
@@ -83,7 +96,7 @@ function ApplicationCard(props: ApplicationCardProps) {
 					<Spacer />
 					<VStack spacing={0} align="top">
 						<Text>
-							{dateApplied?.toLocaleDateString("en-us", {
+							{new Date(dateApplied).toLocaleDateString("en-us", {
 								year: "numeric",
 								month: "short",
 								day: "numeric",
@@ -115,7 +128,8 @@ function ApplicationCard(props: ApplicationCardProps) {
 						as="button"
 						color={colorMode === "light" ? "gray.200" : "gray.700"}
 						_hover={{ color: colorMode === "light" ? "gray.400" : "gray.500" }}
-						onClick={() => {
+						onClick={(e: React.MouseEvent<SVGAElement>) => {
+							e.stopPropagation();
 							deleteApplication({
 								variables: { userId: uid, appId: id },
 							});

@@ -15,12 +15,24 @@ import {
 	Select,
 	Textarea,
 } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
-import { ADD_APP } from "../../gql/mutations/mutation";
+import React, { useEffect, useRef, useState } from "react";
+import { ADD_APP, UPDATE_APP } from "../../gql/mutations/mutation";
 import { GET_APPLICATIONS } from "../../gql/queries/query";
+import { Application } from "../../types/types";
 
-function AddAppModal(props: any) {
-	const [company, setCompany] = useState("");
+type AddAppModalProps = {
+	isOpen: boolean;
+	onOpen: () => void;
+	onClose: () => void;
+	uid?: string;
+	application: any; // I know this is bad. Fix later
+	resetApp: () => void;
+};
+
+function AddAppModal(props: AddAppModalProps) {
+	const { isOpen, onClose, uid, application, resetApp } = props;
+
+	const [company, setCompany] = useState<string>("");
 	const [role, setRole] = useState("");
 	const [location, setLocation] = useState("");
 	const [status, setStatus] = useState("");
@@ -33,7 +45,6 @@ function AddAppModal(props: any) {
 	const [dateInvalid, setDateInvalid] = useState(false);
 
 	const initialRef = useRef(null);
-	const { isOpen, onClose, uid } = props;
 
 	const resetState = () => {
 		setCompany("");
@@ -47,6 +58,15 @@ function AddAppModal(props: any) {
 		setStatusInvalid(false);
 		setDateInvalid(false);
 	};
+
+	useEffect(() => {
+		if (application.company) setCompany(application.company);
+		if (application.role) setRole(application.role);
+		if (application.location) setLocation(application.location);
+		if (application.status) setStatus(application.status);
+		if (application.dateApplied) setDateApplied(application.dateApplied);
+		if (application.notes) setNotes(application.notes);
+	}, [application]);
 
 	const [addApplication, { data, loading, error }] = useMutation(ADD_APP, {
 		update(cache, { data: { addApplication } }) {
@@ -67,6 +87,27 @@ function AddAppModal(props: any) {
 			});
 		},
 	});
+
+	const [updateApp, { data: upData, loading: upLoading, error: upErr }] =
+		useMutation(UPDATE_APP, {
+			update(cache, { data: { addApplication } }) {
+				cache.modify({
+					fields: {
+						applications(existingApps = []) {
+							const newAppRef = cache.writeQuery({
+								query: GET_APPLICATIONS,
+								variables: {
+									userId: uid,
+								},
+								data: addApplication,
+							});
+
+							return [...existingApps, newAppRef];
+						},
+					},
+				});
+			},
+		});
 
 	const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
@@ -92,28 +133,56 @@ function AddAppModal(props: any) {
 			return;
 		}
 
-		addApplication({
-			variables: {
-				userId: uid,
-				company: company,
-				role: role,
-				location: location,
-				status: status,
-				dateApplied: dateApplied,
-				notes: notes,
-			},
-		});
+		if (Object.keys(application).length > 0) {
+			updateApp({
+				variables: {
+					userId: uid,
+					appId: application.id,
+					company: company,
+					role: role,
+					location: location,
+					status: status,
+					dateApplied: dateApplied,
+					notes: notes,
+				},
+			});
+		} else {
+			// New Application
+
+			addApplication({
+				variables: {
+					userId: uid,
+					company: company,
+					role: role,
+					location: location,
+					status: status,
+					dateApplied: dateApplied,
+					notes: notes,
+				},
+			});
+		}
 
 		resetState();
+		resetApp();
 		// TODO: MAKE SURE ERROR DOESN'T HAPPEN!!
 		onClose();
 	};
 
 	return (
-		<Modal isCentered isOpen={isOpen} onClose={onClose}>
+		<Modal
+			isCentered
+			isOpen={isOpen}
+			onClose={() => {
+				resetState();
+				resetApp();
+				onClose();
+			}}
+		>
 			<ModalOverlay />
 			<ModalContent>
-				<ModalHeader>Add Application</ModalHeader>
+				<ModalHeader>
+					{Object.keys(application).length > 0 ? "Update" : "Add"} Application
+				</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody pb={6}>
 					<FormControl isInvalid={companyInvald}>
@@ -202,7 +271,7 @@ function AddAppModal(props: any) {
 
 				<ModalFooter>
 					<Button w="100px" colorScheme="purple" mr={3} onClick={onSubmit}>
-						Add
+						{Object.keys(application).length > 0 ? "Update" : "Add"}
 					</Button>
 					<Button
 						w="100px"

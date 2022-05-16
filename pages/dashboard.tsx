@@ -28,16 +28,7 @@ import { GET_APPLICATIONS } from "../gql/queries/query";
 import { useQuery } from "@apollo/client";
 import { useAuthState } from "react-firebase-hooks/auth";
 import AddAppModal from "../components/AddAppModal/AddAppModal";
-
-type Application = {
-	id: string;
-	company: string;
-	role: string;
-	location?: string;
-	status: string;
-	dateApplied: string;
-	notes?: string;
-};
+import { Application } from "../types/types";
 
 const Dashboard: NextPage = () => {
 	const router = useRouter();
@@ -55,12 +46,32 @@ const Dashboard: NextPage = () => {
 
 	const { colorMode, toggleColorMode } = useColorMode();
 
+	const [currentApp, setCurrentApp] = useState({});
+
 	const [user, authLoading, authErr] = useAuthState(auth);
 
 	// TODO: ONLY QUERY IF USER IS NOT NULL !!
 	const { loading, error, data } = useQuery(GET_APPLICATIONS, {
 		variables: { userId: user?.uid },
 	});
+
+	const onApplicationClick = (app: Application) => {
+		setCurrentApp({
+			id: app.id,
+			company: app.company,
+			role: app.role,
+			location: app.location,
+			status: app.status,
+			dateApplied: app.dateApplied,
+			notes: app.notes,
+		});
+
+		onAddModalOpen();
+	};
+
+	const resetApp = () => {
+		setCurrentApp({});
+	};
 
 	useEffect(() => {
 		if (!user && !authLoading) {
@@ -86,7 +97,6 @@ const Dashboard: NextPage = () => {
 	if (error) {
 		console.log(error.message);
 	}
-	console.log(data);
 
 	return (
 		<Flex w="100%" h="100vh" align="center" justify="center" direction="column">
@@ -100,6 +110,8 @@ const Dashboard: NextPage = () => {
 				onOpen={onAddModalOpen}
 				onClose={onAddModalClose}
 				uid={user?.uid}
+				application={currentApp}
+				resetApp={resetApp}
 			/>
 			<Flex direction="column">
 				<HStack mb={4}>
@@ -209,8 +221,9 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={new Date(app.dateApplied)}
+														dateApplied={app.dateApplied}
 														uid={user?.uid}
+														onclick={onApplicationClick}
 													/>
 												);
 											}
@@ -243,8 +256,9 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={new Date(app.dateApplied)}
+														dateApplied={app.dateApplied}
 														uid={user?.uid}
+														onclick={onApplicationClick}
 													/>
 												);
 											}
@@ -273,8 +287,9 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={new Date(app.dateApplied)}
+														dateApplied={app.dateApplied}
 														uid={user?.uid}
+														onclick={onApplicationClick}
 													/>
 												);
 											}
@@ -303,8 +318,9 @@ const Dashboard: NextPage = () => {
 														role={app.role}
 														status={app.status}
 														notes={app.notes}
-														dateApplied={new Date(app.dateApplied)}
+														dateApplied={app.dateApplied}
 														uid={user?.uid}
+														onclick={onApplicationClick}
 													/>
 												);
 											}
