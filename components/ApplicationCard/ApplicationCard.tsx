@@ -8,9 +8,9 @@ import {
 	Spacer,
 	Text,
 	useColorMode,
-	VStack,
+	VStack
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React from "react";
 import { DEL_APP } from "../../gql/mutations/mutation";
 import { GET_APPLICATIONS } from "../../gql/queries/query";
 

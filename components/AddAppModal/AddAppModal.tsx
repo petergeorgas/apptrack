@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import {
 	Button,
 	FormControl,
@@ -13,12 +13,11 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	Select,
-	Textarea,
+	Textarea
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { ADD_APP, UPDATE_APP } from "../../gql/mutations/mutation";
 import { GET_APPLICATIONS } from "../../gql/queries/query";
-import { Application } from "../../types/types";
 
 type AddAppModalProps = {
 	isOpen: boolean;
