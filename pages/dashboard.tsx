@@ -6,16 +6,18 @@ import {
 	Flex,
 	Grid,
 	GridItem,
-	Heading, IconButton,
+	Heading,
+	IconButton,
 	Input,
 	InputGroup,
 	InputLeftElement,
 	Spacer,
 	Spinner,
-	Stack, useBreakpointValue,
+	Stack,
+	useBreakpointValue,
 	useColorMode,
 	useDisclosure,
-	useToast
+	useToast,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -100,7 +102,7 @@ const Dashboard: NextPage = () => {
 		) {
 			setTimeout(() => toggleColorMode(), 500);
 		}
-	}, []);
+	}, [colorMode, toggleColorMode]);
 
 	if (!authLoading && !authErr && !loading && error) {
 		toast({
@@ -130,7 +132,9 @@ const Dashboard: NextPage = () => {
 			<Flex direction="column" w={["100%", null, null, null, "1500px"]} p={4}>
 				<Stack mb={4} direction={["column", null, null, "row", "row"]}>
 					<InputGroup mt={fullWidth ? "50px" : ""}>
-						<InputLeftElement children={<Search2Icon color="gray" />} />
+						<InputLeftElement>
+							<Search2Icon color="gray" />
+						</InputLeftElement>
 						<Input
 							size="lg"
 							w={["100%", null, null, null, "500px"]}
