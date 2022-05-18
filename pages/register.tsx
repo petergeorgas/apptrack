@@ -10,7 +10,7 @@ import {
 	Input,
 	Spacer,
 	useToast,
-	VStack,
+	VStack
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";

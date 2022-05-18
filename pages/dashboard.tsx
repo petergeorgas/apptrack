@@ -1,36 +1,31 @@
+import { useQuery } from "@apollo/client";
+import { MoonIcon, Search2Icon, SunIcon } from "@chakra-ui/icons";
 import {
 	Box,
 	Button,
 	Flex,
 	Grid,
 	GridItem,
-	Heading,
-	HStack,
-	IconButton,
+	Heading, IconButton,
 	Input,
 	InputGroup,
 	InputLeftElement,
 	Spacer,
 	Spinner,
-	Stack,
-	Text,
-	useBreakpointValue,
+	Stack, useBreakpointValue,
 	useColorMode,
 	useDisclosure,
-	useToast,
-	VStack,
+	useToast
 } from "@chakra-ui/react";
-import { MoonIcon, Search2Icon, SearchIcon, SunIcon } from "@chakra-ui/icons";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
-import { auth, logout } from "../firebase/firebase";
-import ApplicationCard from "../components/ApplicationCard/ApplicationCard";
-import SignOutAlert from "../components/SignOutAlert/SignOutAlert";
-import { GET_APPLICATIONS } from "../gql/queries/query";
-import { useQuery } from "@apollo/client";
+import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import AddAppModal from "../components/AddAppModal/AddAppModal";
+import ApplicationCard from "../components/ApplicationCard/ApplicationCard";
+import SignOutAlert from "../components/SignOutAlert/SignOutAlert";
+import { auth } from "../firebase/firebase";
+import { GET_APPLICATIONS } from "../gql/queries/query";
 import { Application } from "../types/types";
 
 const Dashboard: NextPage = () => {

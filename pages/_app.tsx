@@ -1,8 +1,8 @@
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { ApolloProvider } from "@apollo/client";
+import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
+import type { AppProps } from "next/app";
 import client from "../apollo/client";
+import "../styles/globals.css";
 import theme from "../theme/theme";
 
 function MyApp({ Component, pageProps }: AppProps) {

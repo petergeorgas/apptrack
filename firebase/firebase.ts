@@ -1,12 +1,7 @@
-import { FirebaseError, initializeApp } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import {
-	getAuth,
-	GoogleAuthProvider,
-	signInWithPopup,
-	signInWithEmailAndPassword,
-	createUserWithEmailAndPassword,
-	signOut,
-	sendPasswordResetEmail,
+	createUserWithEmailAndPassword, getAuth,
+	GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signOut
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -57,3 +52,4 @@ export {
 	sendPassReset,
 	logout,
 };
+

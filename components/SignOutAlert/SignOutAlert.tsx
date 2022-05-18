@@ -6,7 +6,7 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogOverlay,
-	Button,
+	Button
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useRef } from "react";

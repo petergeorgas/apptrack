@@ -3,10 +3,8 @@ import {
 	Button,
 	Divider,
 	Flex,
-	Heading,
-	Spacer,
-	Text,
-	VStack,
+	Heading, Text,
+	VStack
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";

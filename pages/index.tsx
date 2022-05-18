@@ -8,10 +8,7 @@ import {
 	Heading,
 	Input,
 	Link,
-	Spacer,
-	Text,
-	useToast,
-	VStack,
+	Spacer, VStack
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -19,9 +16,7 @@ import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
 	auth,
-	logInWithEmailAndPass,
-	logout,
-	sendPassReset,
+	logInWithEmailAndPass, sendPassReset
 } from "../firebase/firebase";
 
 const Home: NextPage = () => {
