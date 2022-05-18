@@ -21,11 +21,11 @@ type SignOutAlertProps = {
 function SignOutAlert(props: any) {
 	const router = useRouter();
 	const { isOpen, onOpen, onClose } = props;
-	const cancelRef = useRef(null);
+	const initialRef = useRef(null);
 
 	return (
 		<AlertDialog
-			leastDestructiveRef={cancelRef}
+			leastDestructiveRef={initialRef}
 			onClose={onClose}
 			isOpen={isOpen}
 			isCentered
@@ -39,7 +39,7 @@ function SignOutAlert(props: any) {
 					Are you sure you would like to sign out?
 				</AlertDialogBody>
 				<AlertDialogFooter>
-					<Button w="100px" ref={cancelRef} onClick={onClose}>
+					<Button w="100px" onClick={onClose}>
 						Cancel
 					</Button>
 					<Button
@@ -50,6 +50,7 @@ function SignOutAlert(props: any) {
 							logout();
 							router.push("/");
 						}}
+						ref={initialRef}
 					>
 						Sign Out
 					</Button>
