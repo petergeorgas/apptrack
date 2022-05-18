@@ -134,7 +134,7 @@ const Dashboard: NextPage = () => {
 			/>
 			<Flex direction="column" w={["100%", null, null, null, "1500px"]} p={4}>
 				<Stack mb={4} direction={["column", null, null, "row", "row"]}>
-					<InputGroup mt={fullWidth ? "50px" : null}>
+					<InputGroup mt={fullWidth ? "50px" : ""}>
 						<InputLeftElement children={<Search2Icon color="gray" />} />
 						<Input
 							size="lg"
