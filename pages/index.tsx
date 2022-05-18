@@ -6,9 +6,11 @@ import {
 	FormControl,
 	FormErrorMessage,
 	Heading,
+	Image,
 	Input,
 	Link,
-	Spacer, VStack
+	Spacer,
+	VStack,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -16,7 +18,8 @@ import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
 	auth,
-	logInWithEmailAndPass, sendPassReset
+	logInWithEmailAndPass,
+	sendPassReset,
 } from "../firebase/firebase";
 
 const Home: NextPage = () => {
@@ -52,7 +55,8 @@ const Home: NextPage = () => {
 		router.push("/passwordReset");
 	};
 
-	const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+	const onSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
 		try {
 			await logInWithEmailAndPass(email, pass);
 		} catch (e: any) {
@@ -78,43 +82,53 @@ const Home: NextPage = () => {
 			<Box
 				boxShadow="lg"
 				w="md"
-				h="sm"
+				h="md"
 				borderWidth="1px"
 				borderRadius="lg"
 				p={4}
 			>
-				<VStack align="flex-start" w="full" h="full" spacing={4}>
-					<Heading>Log In</Heading>
-					<Spacer />
-					<Input value={email} placeholder="Email" onChange={onEmailChange} />
-					<FormControl isInvalid={invalid}>
-						<Input
-							isInvalid={invalid}
-							value={pass}
-							placeholder="Password"
-							type="password"
-							onChange={onPassChange}
-						/>
-						<FormErrorMessage>{invalidText}</FormErrorMessage>
-					</FormControl>
-					<Link color="purple.400" onClick={onForgetPass}>
-						Forgot password?
-					</Link>
-					<Spacer />
-					<Divider />
-					<Button colorScheme="purple" w="full" onClick={onSubmit}>
-						Sign In
-					</Button>
-					<Button
-						colorScheme="gray"
-						w="full"
-						onClick={() => {
-							router.push("/register");
-						}}
-					>
-						Create Account
-					</Button>
-				</VStack>
+				<form onSubmit={onSubmit}>
+					<VStack align="flex-start" w="full" h="full" spacing={4}>
+						<Heading>Log In</Heading>
+						<Spacer />
+						<Input value={email} placeholder="Email" onChange={onEmailChange} />
+						<FormControl isInvalid={invalid}>
+							<Input
+								isInvalid={invalid}
+								value={pass}
+								placeholder="Password"
+								type="password"
+								onChange={onPassChange}
+							/>
+							<FormErrorMessage>{invalidText}</FormErrorMessage>
+						</FormControl>
+						<Link color="purple.400" onClick={onForgetPass}>
+							Forgot password?
+						</Link>
+						<Spacer />
+						<Divider />
+						<Button colorScheme="purple" w="full" type="submit">
+							Sign in with email
+						</Button>
+						<Button
+							colorScheme="purple"
+							w="full"
+							variant="outline"
+							leftIcon={<Image src="/GOOGLE_G.png" boxSize="20px" />}
+						>
+							Sign in with Google
+						</Button>
+						<Button
+							colorScheme="gray"
+							w="full"
+							onClick={() => {
+								router.push("/register");
+							}}
+						>
+							Create Account
+						</Button>
+					</VStack>
+				</form>
 			</Box>
 		</Flex>
 	);
