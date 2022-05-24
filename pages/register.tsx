@@ -10,7 +10,7 @@ import {
 	Input,
 	Spacer,
 	useToast,
-	VStack
+	VStack,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -46,7 +46,7 @@ const Register: NextPage = () => {
 		setInvalidText("");
 	};
 
-	const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+	const onSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		var uid;
 		try {
@@ -90,51 +90,53 @@ const Register: NextPage = () => {
 
 	return (
 		<Flex w="full" h="100vh" justify="center" align="center">
-			<Box
-				boxShadow="lg"
-				w="md"
-				h="sm"
-				borderWidth="1px"
-				borderRadius="lg"
-				p={4}
-			>
-				<VStack align="flex-start" w="full" h="full" spacing={4}>
-					<Heading>Sign Up</Heading>
-					<Spacer />
-					<FormControl isInvalid={invalidEmail}>
-						<Input
-							type="email"
-							value={email}
-							placeholder="Email"
-							onChange={onEmailChange}
-						/>
-						<FormErrorMessage>{invalidText}</FormErrorMessage>
-					</FormControl>
-					<FormControl isInvalid={invalidPass}>
-						<Input
-							value={pass}
-							placeholder="Password"
-							type="password"
-							onChange={onPassChange}
-						/>
-						<FormErrorMessage>{invalidText}</FormErrorMessage>
-					</FormControl>
-					<Spacer />
-					<Divider />
-					<Button colorScheme="purple" w="full" onClick={onSubmit}>
-						Create Account
-					</Button>
-					<Button
-						colorScheme="gray"
-						w="full"
-						onClick={() => {
-							router.push("/");
-						}}
-					>
-						Back
-					</Button>
-				</VStack>
-			</Box>
+			<form onSubmit={onSubmit}>
+				<Box
+					boxShadow="lg"
+					w="md"
+					h="sm"
+					borderWidth="1px"
+					borderRadius="lg"
+					p={4}
+				>
+					<VStack align="flex-start" w="full" h="full" spacing={4}>
+						<Heading>Sign Up</Heading>
+						<Spacer />
+						<FormControl isInvalid={invalidEmail}>
+							<Input
+								type="email"
+								value={email}
+								placeholder="Email"
+								onChange={onEmailChange}
+							/>
+							<FormErrorMessage>{invalidText}</FormErrorMessage>
+						</FormControl>
+						<FormControl isInvalid={invalidPass}>
+							<Input
+								value={pass}
+								placeholder="Password"
+								type="password"
+								onChange={onPassChange}
+							/>
+							<FormErrorMessage>{invalidText}</FormErrorMessage>
+						</FormControl>
+						<Spacer />
+						<Divider />
+						<Button colorScheme="purple" w="full" type="submit">
+							Create Account
+						</Button>
+						<Button
+							colorScheme="gray"
+							w="full"
+							onClick={() => {
+								router.push("/");
+							}}
+						>
+							Back
+						</Button>
+					</VStack>
+				</Box>
+			</form>
 		</Flex>
 	);
 };
