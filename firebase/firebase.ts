@@ -42,9 +42,18 @@ const sendPassReset = async (email: string) => {
 	await sendPasswordResetEmail(auth, email);
 };
 
+const logInWithGoogle = async () => {
+	const res = await signInWithPopup(auth, googleProvider);
+	const uid = res.user.uid;
+	const email = res.user.email;
+
+	return { uid, email };
+};
+
 const logInWithEmailAndPass = async (email: string, pass: string) => {
 	await signInWithEmailAndPassword(auth, email, pass);
 };
+
 const logout = () => {
 	signOut(auth);
 };
@@ -54,6 +63,7 @@ export {
 	googleProvider,
 	registerWithEmailAndPass,
 	logInWithEmailAndPass,
+	logInWithGoogle,
 	sendPassReset,
 	logout,
 };
