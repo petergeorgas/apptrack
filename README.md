@@ -1,6 +1,6 @@
 # apptrack
 
-apptrack is a full-stack application that makes it really easy to keep track of all of your job applications. The frontend (this repository) is written with TypeScript and leaverages Next.js/React. [The backend](https://github.com/petergeorgas/AppTrack_Server) uses GraphQL, with resolvers implemented in Go and is deployed to Google Cloud Platform utilizing Cloud Run.
+[apptrack](http://apptrack-phi.vercel.app/) is a full-stack application that makes it really easy to keep track of all of your job applications. The frontend (this repository) is written with TypeScript and leaverages Next.js/React. [The backend](https://github.com/petergeorgas/AppTrack_Server) uses GraphQL, with resolvers implemented in Go and is deployed to Google Cloud Platform utilizing Cloud Run.
 
 
 ### Dark and Light mode
