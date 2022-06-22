@@ -1,34 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# apptrack
 
-## Getting Started
+apptrack is a full-stack application that makes it really easy to keep track of all of your job applications. The frontend (this repository) is written with TypeScript and leaverages Next.js/React. [The backend](https://github.com/petergeorgas/AppTrack_Server) uses GraphQL, with resolvers implemented in Go and is deployed to Google Cloud Platform utilizing Cloud Run.
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### Dark and Light mode
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+![apptrack-dark](https://user-images.githubusercontent.com/21143531/174932480-0e3ae7b2-209d-4b11-b73e-87f2acd0589a.png)
+![apptrack-light](https://user-images.githubusercontent.com/21143531/174933039-9a1a576e-d2ce-44e4-be12-6fa68f4db84f.png)
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Mobile-Friendly
+![image](https://user-images.githubusercontent.com/21143531/174933610-4e087f0a-4872-4d46-b4fe-5d9e6a06e4ff.png)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+#### Adding/Updating Applications
 
-## Learn More
+![Add/Update application](https://user-images.githubusercontent.com/21143531/174933711-1536dfce-e174-4a66-9658-bf8a7e394ea0.png)
 
-To learn more about Next.js, take a look at the following resources:
+### Logging In
+Currently, the only way to use apptrack is by logging in. We use Google Firebase Authentication to handle that, and try to make it as easy as possible. Soon, hopefully apptrack will be able to persist your job application data locally and only require a signin if the user would like to sync their application info across the web. 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![Login Screen](https://user-images.githubusercontent.com/21143531/174934295-db7d8d55-dbba-4a4c-8985-a330e4daea21.png)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
