@@ -17,9 +17,9 @@
 ![Add/Update application](https://user-images.githubusercontent.com/21143531/174933711-1536dfce-e174-4a66-9658-bf8a7e394ea0.png)
 
 ### Logging In
-Currently, the only way to use apptrack is by logging in. We use Google Firebase Authentication to handle that, and try to make it as easy as possible. Soon, hopefully apptrack will be able to persist your job application data locally and only require a signin if the user would like to sync their application info across the web. 
+apptrack now supports guest accounts! Select "Try as Guest" on the login screen to use apptrack as a guest. Guest account data is not accessible across all devices. To use apptrack on multiple devices, please either use "Sign in with Google", or create an account with apptrack.  
 
-![Login Screen](https://user-images.githubusercontent.com/21143531/174934295-db7d8d55-dbba-4a4c-8985-a330e4daea21.png)
+![image](https://user-images.githubusercontent.com/21143531/175791727-aadb62e4-4c04-4487-a861-02947574c6e2.png)
 
 
 
