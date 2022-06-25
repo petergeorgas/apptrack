@@ -20,6 +20,7 @@ import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
 	auth,
+	logInAnonymously,
 	logInWithEmailAndPass,
 	logInWithGoogle,
 	sendPassReset,
@@ -82,6 +83,27 @@ const Home: NextPage = () => {
 		resetState();
 	};
 
+	const onSignInAnon = async (e: React.MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+
+		try {
+			var { uid, email: userEmail } = await logInAnonymously();
+		} catch (e: any) {
+			toast({
+				title: "Sign In Error",
+				description: `There was an issue signing in as guest.\nCode:  ${e}`,
+				status: "error",
+				duration: 5000,
+				isClosable: true,
+			});
+			return;
+		}
+
+		if (uid && userEmail) {
+			await addUser({ variables: { email: userEmail, userId: uid } });
+		}
+	};
+
 	const onSignInWithGoogle = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 
@@ -112,7 +134,7 @@ const Home: NextPage = () => {
 			<Box
 				boxShadow="lg"
 				w="md"
-				h="md"
+				h="lg"
 				borderWidth="1px"
 				borderRadius="lg"
 				p={4}
@@ -148,6 +170,14 @@ const Home: NextPage = () => {
 							onClick={onSignInWithGoogle}
 						>
 							Sign in with Google
+						</Button>
+						<Button
+							colorScheme="purple"
+							w="full"
+							variant="outline"
+							onClick={onSignInAnon}
+						>
+							Try as Guest
 						</Button>
 						<Button
 							colorScheme="gray"

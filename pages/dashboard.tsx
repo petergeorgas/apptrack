@@ -67,14 +67,15 @@ const Dashboard: NextPage = () => {
 	const [ getApps, {loading, error, data} ] = useLazyQuery(GET_APPLICATIONS, {
 		variables: { userId: user?.uid },
 		onError: (e: ApolloError) => {
-			console.log(e)
-			toast({
-				title: "Apollo Error",
-				description: `There was an issue with Apollo: ${e.message}`,
-				status: "error",
-				duration: 6000,
-				isClosable: true,
-			});
+			if(!e.message.startsWith("rpc error: code = NotFound")){
+				toast({
+					title: "Apollo Error",
+					description: `There was an issue with Apollo: ${e.message}`,
+					status: "error",
+					duration: 6000,
+					isClosable: true,
+				});
+		}
 		},
 	});
 
