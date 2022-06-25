@@ -7,7 +7,6 @@ import {
 	createUserWithEmailAndPassword,
 	signOut,
 	sendPasswordResetEmail,
-	signInAnonymously,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -55,14 +54,6 @@ const logInWithEmailAndPass = async (email: string, pass: string) => {
 	await signInWithEmailAndPassword(auth, email, pass);
 };
 
-const logInAnonymously = async () => {
-	const res = await signInAnonymously(auth); 
-	const uid = res.user.uid;
-	const email = "anon"
-
-	return {uid, email}
-}
-
 const logout = () => {
 	signOut(auth);
 };
@@ -73,7 +64,6 @@ export {
 	registerWithEmailAndPass,
 	logInWithEmailAndPass,
 	logInWithGoogle,
-	logInAnonymously,
 	sendPassReset,
 	logout,
 };
