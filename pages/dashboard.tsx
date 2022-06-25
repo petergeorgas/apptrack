@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { ApolloError, useLazyQuery, useQuery } from "@apollo/client";
 import { MoonIcon, Search2Icon, SunIcon } from "@chakra-ui/icons";
 import {
 	Box,
@@ -39,6 +39,7 @@ const Dashboard: NextPage = () => {
 		onOpen: onAlertOpen,
 		onClose: onAlertClose,
 	} = useDisclosure();
+
 	const {
 		isOpen: isAddModalOpen,
 		onOpen: onAddModalOpen,
@@ -51,6 +52,8 @@ const Dashboard: NextPage = () => {
 
 	const [user, authLoading, authErr] = useAuthState(auth);
 
+	const [isDataLoading, setDataLoading] = useState(true);
+
 	const fullWidth = useBreakpointValue({
 		base: true,
 		sm: true,
@@ -61,8 +64,18 @@ const Dashboard: NextPage = () => {
 	});
 
 	// TODO: ONLY QUERY IF USER IS NOT NULL !!
-	const { loading, error, data } = useQuery(GET_APPLICATIONS, {
+	const [ getApps, {loading, error, data} ] = useLazyQuery(GET_APPLICATIONS, {
 		variables: { userId: user?.uid },
+		onError: (e: ApolloError) => {
+			console.log(e)
+			toast({
+				title: "Apollo Error",
+				description: `There was an issue with Apollo: ${e.message}`,
+				status: "error",
+				duration: 6000,
+				isClosable: true,
+			});
+		},
 	});
 
 	const onApplicationClick = (app: Application) => {
@@ -89,6 +102,13 @@ const Dashboard: NextPage = () => {
 		}
 	}, [user, authLoading, router]);
 
+	useEffect( () => {
+		if(user && user.uid){
+			getApps()
+			setDataLoading(false)
+		}
+	}, [getApps, user])
+
 	useEffect(() => {
 		if (
 			localStorage.getItem("apptrack-ui-color-mode") === "dark" &&
@@ -104,10 +124,10 @@ const Dashboard: NextPage = () => {
 		}
 	}, [colorMode, toggleColorMode]);
 
-	if (!authLoading && !authErr && !loading && error) {
+	if (!authLoading && authErr) {
 		toast({
-			title: "Data Load Error",
-			description: `There was an issue loading data: ${error?.networkError}, ${user?.uid}`,
+			title: "Auth Error",
+			description: `There was an issue with auth: ${authErr.message}, ${user?.uid}`,
 			status: "error",
 			duration: 9000,
 			isClosable: true,
@@ -120,6 +140,7 @@ const Dashboard: NextPage = () => {
 				isOpen={isAlertOpen}
 				onOpen={onAlertOpen}
 				onClose={onAlertClose}
+				isGuestAccount={user && user.isAnonymous ? true : false}
 			/>
 			<AddAppModal
 				isOpen={isAddModalOpen}
@@ -180,7 +201,7 @@ const Dashboard: NextPage = () => {
 					p={4}
 					overflowY="auto"
 				>
-					{loading ? (
+					{loading || isDataLoading ? (
 						<Flex w="full" h="full" align="center" justify="center">
 							<Spinner size="xl" />
 						</Flex>

@@ -13,15 +13,24 @@ import React, { useRef } from "react";
 import { logout } from "../../firebase/firebase";
 
 type SignOutAlertProps = {
-	isOpen: boolean;
-	onOpen: void;
-	onClose: void;
+	readonly isOpen: boolean;
+	readonly onOpen: void;
+	readonly onClose: void;
+	readonly isGuestAccount: boolean
 };
+
+
 
 function SignOutAlert(props: any) {
 	const router = useRouter();
-	const { isOpen, onOpen, onClose } = props;
+	const { isOpen, onOpen, onClose, isGuestAccount } = props;
 	const initialRef = useRef(null);
+
+	const alertMessage = (
+		<AlertDialogBody>
+			{isGuestAccount ? "You are currently signed in as a guest user. If you sign out, your data will not be accessible again. Are you sure you would like to sign out?" : "Are you sure you would like to sign out?"}
+		</AlertDialogBody>
+	)
 
 	return (
 		<AlertDialog
@@ -35,9 +44,7 @@ function SignOutAlert(props: any) {
 			<AlertDialogContent>
 				<AlertDialogHeader>Confirm sign out</AlertDialogHeader>
 				<AlertDialogCloseButton />
-				<AlertDialogBody>
-					Are you sure you would like to sign out?
-				</AlertDialogBody>
+				{alertMessage}
 				<AlertDialogFooter>
 					<Button w="100px" onClick={onClose}>
 						Cancel
