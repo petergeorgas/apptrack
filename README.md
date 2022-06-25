@@ -9,9 +9,7 @@
 ![apptrack-light](https://user-images.githubusercontent.com/21143531/174933039-9a1a576e-d2ce-44e4-be12-6fa68f4db84f.png)
 
 ### Mobile-Friendly
-![image](https://user-images.githubusercontent.com/21143531/174935182-2a31e153-d5f7-4174-b130-50f3719b0b02.png)
-
-
+![image](https://user-images.githubusercontent.com/21143531/174933610-4e087f0a-4872-4d46-b4fe-5d9e6a06e4ff.png)
 
 
 #### Adding/Updating Applications
