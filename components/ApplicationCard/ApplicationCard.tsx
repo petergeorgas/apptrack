@@ -91,12 +91,6 @@ function ApplicationCard(props: ApplicationCardProps) {
         <HStack>
           <VStack spacing={0} align="left">
             <HStack>
-              <Image
-                borderRadius="full"
-                boxSize="20px"
-                src="https://logo.clearbit.com/spotify.com?size=20"
-                alt="Dan Abramov"
-              />
               <Heading size="sm">{company}</Heading>
             </HStack>
             <Text>{role}</Text>
