@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { ApolloError, useMutation } from "@apollo/client";
 import {
 	Button,
 	FormControl,
@@ -13,7 +13,8 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	Select,
-	Textarea
+	Textarea,
+	useToast
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { ADD_APP, UPDATE_APP } from "../../gql/mutations/mutation";
@@ -30,6 +31,8 @@ type AddAppModalProps = {
 
 function AddAppModal(props: AddAppModalProps) {
 	const { isOpen, onClose, uid, application, resetApp } = props;
+
+	const toast = useToast();
 
 	const [company, setCompany] = useState<string>("");
 	const [role, setRole] = useState("");
@@ -58,6 +61,22 @@ function AddAppModal(props: AddAppModalProps) {
 		setDateInvalid(false);
 	};
 
+	const onMutationComplete = () => {
+		resetState();
+		resetApp();
+		onClose();
+	}
+
+	const onMutationError = (e: ApolloError) => {
+		toast({
+			title: "Apollo Error",
+			description: `Could not mutate application: ${e.message}`,
+			status: "error",
+			duration: 6000,
+			isClosable: true,
+		});
+	}
+
 	useEffect(() => {
 		if (application.company) setCompany(application.company);
 		if (application.role) setRole(application.role);
@@ -85,6 +104,8 @@ function AddAppModal(props: AddAppModalProps) {
 				},
 			});
 		},
+		onCompleted: onMutationComplete,
+		onError: onMutationError,
 	});
 
 	const [updateApp, { data: upData, loading: upLoading, error: upErr }] =
@@ -106,11 +127,12 @@ function AddAppModal(props: AddAppModalProps) {
 					},
 				});
 			},
+			onCompleted: onMutationComplete,
+			onError: onMutationError,
 		});
 
 	const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-		// TODO: Add notes to AddUser
 
 		if (company === "") {
 			setCompanyInvalid(true);
@@ -160,11 +182,6 @@ function AddAppModal(props: AddAppModalProps) {
 				},
 			});
 		}
-
-		resetState();
-		resetApp();
-		// TODO: MAKE SURE ERROR DOESN'T HAPPEN!!
-		onClose();
 	};
 
 	return (
