@@ -5,17 +5,22 @@ import {
   AlertIcon,
   Box,
   Button,
+  Divider,
   Flex,
   Grid,
   GridItem,
   Heading,
+  HStack,
   IconButton,
   Input,
   InputGroup,
   InputLeftElement,
+  Link,
+  PopoverFooter,
   Spacer,
   Spinner,
   Stack,
+  Text,
   useBreakpointValue,
   useColorMode,
   useDisclosure,
@@ -583,6 +588,15 @@ const Dashboard: NextPage = () => {
           )}
         </Box>
       </Flex>
+      <Divider w={["100%", null, null, null, "1500px"]} />
+      <HStack>
+        <Text fontSize="12" color="gray.500">
+          Company logos courtesy of{" "}
+          <Link color="purple.400" target="_blank" href="http://clearbit.com/">
+            Clearbit
+          </Link>
+        </Text>
+      </HStack>
     </Flex>
   );
 };
