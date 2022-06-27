@@ -4,17 +4,18 @@
 
 
 ### Dark and Light mode
-
-![apptrack-dark](https://user-images.githubusercontent.com/21143531/174932480-0e3ae7b2-209d-4b11-b73e-87f2acd0589a.png)
-![apptrack-light](https://user-images.githubusercontent.com/21143531/174933039-9a1a576e-d2ce-44e4-be12-6fa68f4db84f.png)
+![apptrack-dark](https://user-images.githubusercontent.com/21143531/175854980-63d190f5-4400-4481-91a3-3b8d8e36de3c.png)
+![apptrack-light](https://user-images.githubusercontent.com/21143531/175855011-9f35fd61-3a1e-4de9-b78b-c0356c615b23.png)
 
 ### Mobile-Friendly
-![image](https://user-images.githubusercontent.com/21143531/174933610-4e087f0a-4872-4d46-b4fe-5d9e6a06e4ff.png)
+![mobile](https://user-images.githubusercontent.com/21143531/175855443-a3caac9f-0cce-42fe-9246-092c58415caa.png)
+
+
 
 
 #### Adding/Updating Applications
+![Update application](https://user-images.githubusercontent.com/21143531/175855529-76051242-f811-4668-8b9e-37660c8d13ec.png)
 
-![Add/Update application](https://user-images.githubusercontent.com/21143531/174933711-1536dfce-e174-4a66-9658-bf8a7e394ea0.png)
 
 ### Logging In
 apptrack now supports guest accounts! Select "Try as Guest" on the login screen to use apptrack as a guest. Guest account data is not accessible across all devices. To use apptrack on multiple devices, please either use "Sign in with Google", or create an account with apptrack.  
