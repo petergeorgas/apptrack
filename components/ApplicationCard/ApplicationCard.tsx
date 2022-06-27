@@ -7,25 +7,26 @@ import {
   HStack,
   Image,
   Spacer,
+  Spinner,
   Text,
   useColorMode,
   VStack,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DEL_APP } from "../../gql/mutations/mutation";
 import { GET_APPLICATIONS } from "../../gql/queries/query";
 
 type ApplicationCardProps = {
-  id: string;
-  company: string;
-  role: string;
-  status: string;
-  location?: string;
-  dateApplied: string;
-  dateUpdated?: string;
-  notes?: string;
-  uid?: string;
-  onclick: Function;
+  readonly id: string;
+  readonly company: string;
+  readonly role: string;
+  readonly status: string;
+  readonly location?: string;
+  readonly dateApplied: string;
+  readonly dateUpdated?: string;
+  readonly notes?: string;
+  readonly uid?: string;
+  readonly onclick: Function;
 };
 
 function ApplicationCard(props: ApplicationCardProps) {
@@ -64,6 +65,24 @@ function ApplicationCard(props: ApplicationCardProps) {
     },
   });
 
+  const [logo, setLogo] = useState<string | undefined>(undefined);
+  const [logoLoading, setLogoLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    fetch(`/api/company?name=${company}`)
+      .then((res) => {
+        return res.json();
+      })
+      .then((json) => {
+        if (!json.error) setLogo(`${json.logo}?size=80`);
+      })
+      .catch((err) => {
+        console.log("ERROR!!");
+      });
+
+    setLogoLoading(false);
+  }, [company, setLogo, setLogoLoading]);
+
   return (
     <Box
       color={colorMode === "light" ? "black" : "white"}
@@ -91,6 +110,16 @@ function ApplicationCard(props: ApplicationCardProps) {
         <HStack>
           <VStack spacing={0} align="left">
             <HStack>
+              {logo ? (
+                <Image
+                  borderRadius="full"
+                  boxSize="20px"
+                  src={logo}
+                  alt={`${company} logo`}
+                />
+              ) : loading ? (
+                <Spinner size="sm" />
+              ) : null}
               <Heading size="sm">{company}</Heading>
             </HStack>
             <Text>{role}</Text>
