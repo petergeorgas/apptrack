@@ -68,6 +68,9 @@ function ApplicationCard(props: ApplicationCardProps) {
   const [logo, setLogo] = useState<string | undefined>(undefined);
   const [logoLoading, setLogoLoading] = useState<boolean>(true);
 
+  const dateStamp = new Date(dateApplied);
+  dateStamp.setUTCHours(23, 59);
+
   useEffect(() => {
     fetch(`/api/company?name=${company}`)
       .then((res) => {
@@ -127,7 +130,7 @@ function ApplicationCard(props: ApplicationCardProps) {
           <Spacer />
           <VStack spacing={0} align="top">
             <Text>
-              {new Date(dateApplied).toLocaleDateString("en-us", {
+              {dateStamp.toLocaleDateString("en-us", {
                 year: "numeric",
                 month: "short",
                 day: "numeric",
