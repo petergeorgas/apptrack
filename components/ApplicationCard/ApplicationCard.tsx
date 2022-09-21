@@ -13,35 +13,24 @@ import {
 	VStack,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase/firebase";
 import { DEL_APP } from "../../gql/mutations/mutation";
 import { GET_APPLICATIONS } from "../../gql/queries/query";
+import { Application } from "../../types/types";
 
 type ApplicationCardProps = {
-	readonly id: string;
-	readonly company: string;
-	readonly role: string;
-	readonly status: string;
-	readonly location?: string;
-	readonly dateApplied: string;
-	readonly dateUpdated?: string;
-	readonly notes?: string;
-	readonly uid?: string;
+	readonly application: Application;
 	readonly onclick: Function;
 };
 
 function ApplicationCard(props: ApplicationCardProps) {
-	const {
-		id,
-		company,
-		role,
-		status,
-		location,
-		dateApplied,
-		dateUpdated,
-		notes,
-		uid,
-		onclick,
-	} = props;
+	const { application, onclick } = props;
+
+	const { id, company, role, status, location, dateApplied, notes } =
+		application;
+
+	const [user, authLoading, authErr] = useAuthState(auth);
 
 	const { colorMode, toggleColorMode } = useColorMode();
 
@@ -53,7 +42,7 @@ function ApplicationCard(props: ApplicationCardProps) {
 						const newAppRef = cache.writeQuery({
 							query: GET_APPLICATIONS,
 							variables: {
-								userId: uid,
+								userId: user?.uid,
 							},
 							data: addApplication,
 						});
@@ -167,7 +156,7 @@ function ApplicationCard(props: ApplicationCardProps) {
 							onClick={(e: React.MouseEvent<SVGAElement>) => {
 								e.stopPropagation();
 								deleteApplication({
-									variables: { userId: uid, appId: id },
+									variables: { userId: user?.uid, appId: id },
 								});
 							}}
 						/>

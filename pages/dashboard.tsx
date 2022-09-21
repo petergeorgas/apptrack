@@ -27,11 +27,14 @@ import {
 	useToast,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import App from "next/app";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import AddAppModal from "../components/AddAppModal/AddAppModal";
 import ApplicationCard from "../components/ApplicationCard/ApplicationCard";
+import ApplicationGroup from "../components/ApplicationGroup/ApplicationGroup";
+import { Group } from "../components/ApplicationGroup/types";
 import SignOutAlert from "../components/SignOutAlert/SignOutAlert";
 import { auth } from "../firebase/firebase";
 import { GET_APPLICATIONS } from "../gql/queries/query";
@@ -192,6 +195,20 @@ const Dashboard: NextPage = () => {
 		</Stack>
 	);
 
+	const clearBitFooter = (
+		<>
+			<Divider w={["100%", null, null, null, "1500px"]} />
+			<HStack>
+				<Text fontSize="12" color="gray.500">
+					Company logos courtesy of{" "}
+					<Link color="purple.400" target="_blank" href="http://clearbit.com/">
+						Clearbit
+					</Link>
+				</Text>
+			</HStack>
+		</>
+	);
+
 	return (
 		<Flex w="100%" h="100vh" align="center" justify="center" direction="column">
 			<SignOutAlert
@@ -241,364 +258,43 @@ const Dashboard: NextPage = () => {
 							gap={5}
 							h="full"
 						>
-							{!fullWidth ? (
-								<>
-									<GridItem
-										w="100%"
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										rowSpan={1}
-									>
-										<Heading size="md">Apply</Heading>
-									</GridItem>
-									<GridItem
-										w="100%"
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										rowSpan={1}
-									>
-										<Heading size="md">In Progress</Heading>
-									</GridItem>
-									<GridItem
-										w="100%"
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										rowSpan={1}
-									>
-										<Heading size="md">Offer</Heading>
-									</GridItem>
-									<GridItem
-										w="100%"
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										rowSpan={1}
-									>
-										<Heading size="md">Reject</Heading>
-									</GridItem>
-									<GridItem
-										w="100%"
-										bg={colorMode === "light" ? "gray.100" : "gray.700"}
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										overflowY="auto"
-										rowSpan={7}
-									>
-										{data && (
-											<>
-												{data.applications.map((app: Application) => {
-													if (app.status === "APPLY") {
-														return (
-															<ApplicationCard
-																key={app.id}
-																id={app.id}
-																company={app.company}
-																location={app.location}
-																role={app.role}
-																status={app.status}
-																notes={app.notes}
-																dateApplied={app.dateApplied}
-																uid={user?.uid}
-																onclick={onApplicationClick}
-															/>
-														);
-													}
-												})}
-											</>
-										)}
-									</GridItem>
-									<GridItem
-										w="100%"
-										bg={colorMode === "light" ? "gray.100" : "gray.700"}
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										overflowY="auto"
-										rowSpan={7}
-									>
-										{data && (
-											<>
-												{data.applications.map((app: Application) => {
-													if (
-														app.status === "OA" ||
-														app.status === "PHONE" ||
-														app.status === "ONSITE" ||
-														app.status === "FINAL"
-													) {
-														return (
-															<ApplicationCard
-																key={app.id}
-																id={app.id}
-																company={app.company}
-																location={app.location}
-																role={app.role}
-																status={app.status}
-																notes={app.notes}
-																dateApplied={app.dateApplied}
-																uid={user?.uid}
-																onclick={onApplicationClick}
-															/>
-														);
-													}
-												})}
-											</>
-										)}
-									</GridItem>
-									<GridItem
-										w="100%"
-										bg={colorMode === "light" ? "gray.100" : "gray.700"}
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										overflowY="auto"
-										rowSpan={7}
-									>
-										{data && (
-											<>
-												{data.applications.map((app: Application) => {
-													if (app.status === "OFFER") {
-														return (
-															<ApplicationCard
-																key={app.id}
-																id={app.id}
-																company={app.company}
-																location={app.location}
-																role={app.role}
-																status={app.status}
-																notes={app.notes}
-																dateApplied={app.dateApplied}
-																uid={user?.uid}
-																onclick={onApplicationClick}
-															/>
-														);
-													}
-												})}
-											</>
-										)}
-									</GridItem>
-									<GridItem
-										w="100%"
-										bg={colorMode === "light" ? "gray.100" : "gray.700"}
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										overflowY="auto"
-										rowSpan={7}
-									>
-										{data && (
-											<>
-												{data.applications.map((app: Application) => {
-													if (app.status === "REJECT") {
-														return (
-															<ApplicationCard
-																key={app.id}
-																id={app.id}
-																company={app.company}
-																location={app.location}
-																role={app.role}
-																status={app.status}
-																notes={app.notes}
-																dateApplied={app.dateApplied}
-																uid={user?.uid}
-																onclick={onApplicationClick}
-															/>
-														);
-													}
-												})}
-											</>
-										)}
-									</GridItem>
-								</>
-							) : (
-								<>
-									<GridItem
-										w="100%"
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										rowSpan={1}
-									>
-										<Heading size="md">Apply</Heading>
-									</GridItem>
-									<GridItem
-										w="100%"
-										bg={colorMode === "light" ? "gray.100" : "gray.700"}
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										overflowY="auto"
-										rowSpan={20}
-									>
-										{data && (
-											<>
-												{data.applications.map((app: Application) => {
-													if (app.status === "APPLY") {
-														return (
-															<ApplicationCard
-																key={app.id}
-																id={app.id}
-																company={app.company}
-																location={app.location}
-																role={app.role}
-																status={app.status}
-																notes={app.notes}
-																dateApplied={app.dateApplied}
-																uid={user?.uid}
-																onclick={onApplicationClick}
-															/>
-														);
-													}
-												})}
-											</>
-										)}
-									</GridItem>
-									<GridItem
-										w="100%"
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										rowSpan={1}
-									>
-										<Heading size="md">In Progress</Heading>
-									</GridItem>
-									<GridItem
-										w="100%"
-										bg={colorMode === "light" ? "gray.100" : "gray.700"}
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										overflowY="auto"
-										rowSpan={20}
-									>
-										{data && (
-											<>
-												{data.applications.map((app: Application) => {
-													if (
-														app.status === "OA" ||
-														app.status === "PHONE" ||
-														app.status === "ONSITE" ||
-														app.status === "FINAL"
-													) {
-														return (
-															<ApplicationCard
-																key={app.id}
-																id={app.id}
-																company={app.company}
-																location={app.location}
-																role={app.role}
-																status={app.status}
-																notes={app.notes}
-																dateApplied={app.dateApplied}
-																uid={user?.uid}
-																onclick={onApplicationClick}
-															/>
-														);
-													}
-												})}
-											</>
-										)}
-									</GridItem>
-									<GridItem
-										w="100%"
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										rowSpan={1}
-									>
-										<Heading size="md">Offer</Heading>
-									</GridItem>
-									<GridItem
-										w="100%"
-										bg={colorMode === "light" ? "gray.100" : "gray.700"}
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										overflowY="auto"
-										rowSpan={20}
-									>
-										{data && (
-											<>
-												{data.applications.map((app: Application) => {
-													if (app.status === "OFFER") {
-														return (
-															<ApplicationCard
-																key={app.id}
-																id={app.id}
-																company={app.company}
-																location={app.location}
-																role={app.role}
-																status={app.status}
-																notes={app.notes}
-																dateApplied={app.dateApplied}
-																uid={user?.uid}
-																onclick={onApplicationClick}
-															/>
-														);
-													}
-												})}
-											</>
-										)}
-									</GridItem>
-									<GridItem
-										w="100%"
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										rowSpan={1}
-									>
-										<Heading size="md">Reject</Heading>
-									</GridItem>
-									<GridItem
-										w="100%"
-										bg={colorMode === "light" ? "gray.100" : "gray.700"}
-										borderWidth="2px"
-										borderRadius="lg"
-										p={4}
-										overflowY="auto"
-										rowSpan={20}
-									>
-										{data && (
-											<>
-												{data.applications.map((app: Application) => {
-													if (app.status === "REJECT") {
-														return (
-															<ApplicationCard
-																key={app.id}
-																id={app.id}
-																company={app.company}
-																location={app.location}
-																role={app.role}
-																status={app.status}
-																notes={app.notes}
-																dateApplied={app.dateApplied}
-																uid={user?.uid}
-																onclick={onApplicationClick}
-															/>
-														);
-													}
-												})}
-											</>
-										)}
-									</GridItem>
-								</>
-							)}
+							<ApplicationGroup
+								group={Group.APPLY}
+								applications={data.applications.filter(
+									(app: Application) => app.status === "APPLY"
+								)}
+								onApplicationClick={onApplicationClick}
+							/>
+							<ApplicationGroup
+								group={Group.IN_PROGRESS}
+								applications={data.applications.filter(
+									(app: Application) =>
+										app.status === "PHONE" ||
+										app.status === "OA" ||
+										app.status === "ONSITE" ||
+										app.status === "FINAL"
+								)}
+								onApplicationClick={onApplicationClick}
+							/>
+							<ApplicationGroup
+								group={Group.OFFER}
+								applications={data.applications.filter(
+									(app: Application) => app.status === "OFFER"
+								)}
+								onApplicationClick={onApplicationClick}
+							/>
+							<ApplicationGroup
+								group={Group.REJECT}
+								applications={data.applications.filter(
+									(app: Application) => app.status === "REJECT"
+								)}
+								onApplicationClick={onApplicationClick}
+							/>
 						</Grid>
 					)}
 				</Box>
 			</Flex>
-			<Divider w={["100%", null, null, null, "1500px"]} />
-			<HStack>
-				<Text fontSize="12" color="gray.500">
-					Company logos courtesy of{" "}
-					<Link color="purple.400" target="_blank" href="http://clearbit.com/">
-						Clearbit
-					</Link>
-				</Text>
-			</HStack>
+			{clearBitFooter}
 		</Flex>
 	);
 };
