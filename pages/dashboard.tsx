@@ -163,6 +163,7 @@ const Dashboard: NextPage = () => {
 					You are currently logged in as a guest user. Data is not synced.
 				</Alert>
 			) : null}
+			<Spacer />
 			<Stack direction="row">
 				{fullWidth ? <Spacer /> : null}
 
@@ -260,14 +261,14 @@ const Dashboard: NextPage = () => {
 						>
 							<ApplicationGroup
 								group={Group.APPLY}
-								applications={data.applications.filter(
+								applications={data?.applications?.filter(
 									(app: Application) => app.status === "APPLY"
 								)}
 								onApplicationClick={onApplicationClick}
 							/>
 							<ApplicationGroup
 								group={Group.IN_PROGRESS}
-								applications={data.applications.filter(
+								applications={data?.applications?.filter(
 									(app: Application) =>
 										app.status === "PHONE" ||
 										app.status === "OA" ||
@@ -278,14 +279,14 @@ const Dashboard: NextPage = () => {
 							/>
 							<ApplicationGroup
 								group={Group.OFFER}
-								applications={data.applications.filter(
+								applications={data?.applications?.filter(
 									(app: Application) => app.status === "OFFER"
 								)}
 								onApplicationClick={onApplicationClick}
 							/>
 							<ApplicationGroup
 								group={Group.REJECT}
-								applications={data.applications.filter(
+								applications={data?.applications?.filter(
 									(app: Application) => app.status === "REJECT"
 								)}
 								onApplicationClick={onApplicationClick}
