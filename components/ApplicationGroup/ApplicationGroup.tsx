@@ -23,7 +23,7 @@ function ApplicationGroup(props: ApplicationGroupProps) {
 
 	const { colorMode } = useColorMode();
 
-	const cards = applications.map((app: Application) => {
+	const cards = applications?.map((app: Application) => {
 		return (
 			<ApplicationCard
 				key={app.id}
