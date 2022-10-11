@@ -7,6 +7,7 @@ import {
 	FormControl,
 	FormErrorMessage,
 	Heading,
+	HStack,
 	Image,
 	Input,
 	Link,
@@ -131,16 +132,17 @@ const Home: NextPage = () => {
 
 	return (
 		<Flex w="full" h="100vh" justify="center" align="center">
-			<Box
-				boxShadow="lg"
-				w="md"
-				h="lg"
-				borderWidth="1px"
-				borderRadius="lg"
-				p={4}
-			>
+			<Box boxShadow="lg" w="md" borderWidth="1px" borderRadius="lg" p={4}>
 				<form onSubmit={onSubmit}>
 					<VStack align="flex-start" w="full" h="full" spacing={4}>
+						<HStack>
+							<Image
+								borderRadius="lg"
+								boxSize="50px"
+								src="/android-chrome-192x192.png"
+							/>
+							<Heading>Apptrack</Heading>
+						</HStack>
 						<Heading>Log In</Heading>
 						<Spacer />
 						<Input value={email} placeholder="Email" onChange={onEmailChange} />
