@@ -196,11 +196,11 @@ const Home: NextPage = () => {
 						borderWidth="2px"
 						borderRadius="lg"
 						p={4}
-						overflowY="auto"
 						alignItems="center"
 						display="flex"
 						flexDirection="column"
 						justifyContent="center"
+						overflow="hidde"
 					>
 						{cards}
 					</Container>
