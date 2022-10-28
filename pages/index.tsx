@@ -200,7 +200,7 @@ const Home: NextPage = () => {
 						display="flex"
 						flexDirection="column"
 						justifyContent="center"
-						overflow="hidde"
+						overflow="hidden"
 					>
 						{cards}
 					</Container>
