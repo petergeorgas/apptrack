@@ -34,6 +34,15 @@ const Home: NextPage = () => {
 		"2xl": false,
 	});
 
+	const isBaseWidth = useBreakpointValue({
+		base: true,
+		sm: false,
+		md: false,
+		lg: false,
+		xl: false,
+		"2xl": false,
+	});
+
 	useEffect(() => {
 		if (
 			localStorage.getItem("apptrack-ui-color-mode") === "dark" &&
@@ -179,6 +188,7 @@ const Home: NextPage = () => {
 			bg={colorMode === "light" ? "gray.50" : "gray.900"}
 			alignItems="start"
 			direction="column"
+			overflowX="hidden"
 		>
 			{topBar}
 			<Flex
@@ -188,7 +198,12 @@ const Home: NextPage = () => {
 				w="full"
 				h="full"
 			>
-				<Flex my={50} w="530px" h="530px">
+				<Flex
+					my={50}
+					w={isBaseWidth ? "100%" : "530px"}
+					h="530px"
+					px={isBaseWidth ? 3 : 0}
+				>
 					<Container
 						h="100%"
 						w="100%"
@@ -213,16 +228,25 @@ const Home: NextPage = () => {
 					mt={0}
 				/>
 				<Flex
-					w="500px"
+					w={isBaseWidth ? "100%" : "500px"}
 					h="500px"
 					display="flex"
 					flexDirection="column"
 					justifyContent="center"
+					px={isBaseWidth ? 3 : 0}
 				>
-					<Text fontWeight="bold" fontSize="5xl" mb="20px">
+					<Text
+						fontWeight="bold"
+						fontSize={isBaseWidth ? "4xl" : "5xl"}
+						mb="20px"
+					>
 						Tracking made easy.
 					</Text>
-					<Text fontWeight="light" fontSize="4xl" mb={0}>
+					<Text
+						fontWeight="light"
+						fontSize={isBaseWidth ? "3xl" : "4xl"}
+						mb={0}
+					>
 						apptrack makes keeping tabs on all of your job applications super
 						simple.
 					</Text>
