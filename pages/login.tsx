@@ -141,7 +141,7 @@ const Login: NextPage = () => {
 								boxSize="50px"
 								src="/android-chrome-192x192.png"
 							/>
-							<Heading>Apptrack</Heading>
+							<Heading size="2xl">apptrack</Heading>
 						</HStack>
 						<Heading>Log In</Heading>
 						<Spacer />

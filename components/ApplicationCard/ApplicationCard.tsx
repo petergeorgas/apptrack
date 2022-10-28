@@ -22,10 +22,11 @@ import { Application } from "../../types/types";
 type ApplicationCardProps = {
 	readonly application: Application;
 	readonly onclick: Function;
+	readonly frontPageDummy?: boolean;
 };
 
 function ApplicationCard(props: ApplicationCardProps) {
-	const { application, onclick } = props;
+	const { application, onclick, frontPageDummy } = props;
 
 	const { id, company, role, status, location, dateApplied, notes } =
 		application;
@@ -78,7 +79,7 @@ function ApplicationCard(props: ApplicationCardProps) {
 	return (
 		<Box
 			color={colorMode === "light" ? "black" : "white"}
-			cursor="pointer"
+			cursor={frontPageDummy ? "auto" : "pointer"}
 			bg={colorMode === "light" ? "white" : "gray.800"}
 			boxShadow="md"
 			w="100%"
@@ -147,19 +148,21 @@ function ApplicationCard(props: ApplicationCardProps) {
 							{status}
 						</Badge>
 						<Spacer />
-						<DeleteIcon
-							as="button"
-							color={colorMode === "light" ? "gray.200" : "gray.700"}
-							_hover={{
-								color: colorMode === "light" ? "gray.400" : "gray.500",
-							}}
-							onClick={(e: React.MouseEvent<SVGAElement>) => {
-								e.stopPropagation();
-								deleteApplication({
-									variables: { userId: user?.uid, appId: id },
-								});
-							}}
-						/>
+						{!frontPageDummy ? (
+							<DeleteIcon
+								as="button"
+								color={colorMode === "light" ? "gray.200" : "gray.700"}
+								_hover={{
+									color: colorMode === "light" ? "gray.400" : "gray.500",
+								}}
+								onClick={(e: React.MouseEvent<SVGAElement>) => {
+									e.stopPropagation();
+									deleteApplication({
+										variables: { userId: user?.uid, appId: id },
+									});
+								}}
+							/>
+						) : undefined}
 					</HStack>
 				</VStack>
 			</VStack>
