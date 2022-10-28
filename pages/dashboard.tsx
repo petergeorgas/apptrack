@@ -1,4 +1,4 @@
-import { ApolloError, useLazyQuery, useQuery } from "@apollo/client";
+import { ApolloError, useLazyQuery } from "@apollo/client";
 import { MoonIcon, Search2Icon, SunIcon } from "@chakra-ui/icons";
 import {
 	Alert,
@@ -8,15 +8,12 @@ import {
 	Divider,
 	Flex,
 	Grid,
-	GridItem,
-	Heading,
 	HStack,
 	IconButton,
 	Input,
 	InputGroup,
 	InputLeftElement,
 	Link,
-	PopoverFooter,
 	Spacer,
 	Spinner,
 	Stack,
