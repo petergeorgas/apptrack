@@ -6,7 +6,7 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogOverlay,
-	Button
+	Button,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useRef } from "react";
@@ -16,10 +16,8 @@ type SignOutAlertProps = {
 	readonly isOpen: boolean;
 	readonly onOpen: void;
 	readonly onClose: void;
-	readonly isGuestAccount: boolean
+	readonly isGuestAccount: boolean;
 };
-
-
 
 function SignOutAlert(props: any) {
 	const router = useRouter();
@@ -28,9 +26,11 @@ function SignOutAlert(props: any) {
 
 	const alertMessage = (
 		<AlertDialogBody>
-			{isGuestAccount ? "You are currently signed in as a guest user. If you sign out, your data will not be accessible again. Are you sure you would like to sign out?" : "Are you sure you would like to sign out?"}
+			{isGuestAccount
+				? "You are currently signed in as a guest user. If you sign out, your data will not be accessible again. Are you sure you would like to sign out?"
+				: "Are you sure you would like to sign out?"}
 		</AlertDialogBody>
-	)
+	);
 
 	return (
 		<AlertDialog
@@ -55,7 +55,7 @@ function SignOutAlert(props: any) {
 						ml={3}
 						onClick={() => {
 							logout();
-							router.push("/");
+							router.push("/login");
 						}}
 						ref={initialRef}
 					>

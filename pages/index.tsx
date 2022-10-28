@@ -17,13 +17,17 @@ import {
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 import ApplicationCard from "../components/ApplicationCard/ApplicationCard";
+import { auth } from "../firebase/firebase";
 
 const Home: NextPage = () => {
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	const router = useRouter();
+
+	const [user, loading, err] = useAuthState(auth);
 
 	const stackBodyVertical = useBreakpointValue({
 		base: true,
@@ -106,7 +110,7 @@ const Home: NextPage = () => {
 					w={["75px", "100px", "115px"]}
 					onClick={onTryItClick}
 				>
-					Try It!
+					{user ? "Dashboard" : "Try it!"}
 				</Button>
 			</HStack>
 		</HStack>
