@@ -34,6 +34,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 					<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
 					<meta name="msapplication-TileColor" content="#da532c" />
 					<meta name="theme-color" content="#ffffff" />
+					<meta property="og:title" content="apptrack" key="title" />
+					<meta property="og:image" content="/og.svg" />
+					<meta property="og:site_name" content="apptrack" />
+					<meta
+						property="og:description"
+						content="Track your job applications here."
+					/>
 				</Head>
 				<ColorModeScript initialColorMode={theme.config.initialColorModes} />
 				<Component {...pageProps} />
