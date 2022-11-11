@@ -35,7 +35,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 					<meta name="msapplication-TileColor" content="#da532c" />
 					<meta name="theme-color" content="#ffffff" />
 					<meta property="og:title" content="apptrack" key="title" />
-					<meta property="og:image" content="/og.svg" />
+					<meta
+						property="og:image"
+						content="https://firebasestorage.googleapis.com/v0/b/application-tracker-5027c.appspot.com/o/og.svg?alt=media&token=fac22ee8-52c1-41ea-a4c0-ac5a443839c1"
+					/>
 					<meta property="og:site_name" content="apptrack" />
 					<meta
 						property="og:description"
